@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:weightSum="100">
+
+
+    <Button
+        android:id="@+id/buttonWorkout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="33.33"
+        android:background="@drawable/barbell"
+        android:text="Entrainement"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:alpha="0.8"/>/>
+
+    <Button
+        android:id="@+id/buttonNutrition"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/buttonWorkout"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="33.33"
+        android:background="@drawable/nutrition"
+        android:text="Nutrition"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:alpha="0.8"/>
+
+</LinearLayout>

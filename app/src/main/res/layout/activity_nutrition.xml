@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    android:weightSum="100">
+
+    <Button
+        android:id="@+id/buttonRepas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/buttonNutrition"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="33.33"
+        android:alpha="0.8"
+        android:background="@drawable/repas"
+        android:text="Repas"
+        android:textAllCaps="true"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/buttonAliments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/buttonNutrition"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="33.33"
+        android:alpha="0.8"
+        android:background="@drawable/aliments"
+        android:text="Aliments"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+
+</LinearLayout>

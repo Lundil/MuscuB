@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/appName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/app_name"
+        android:fontFamily="@font/comfortaa"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/appName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="#e57622"
+        android:fontFamily="@font/comfortaa"
+        android:text="Planning"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/buttonWorkout"
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/start"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#93480e"
+        android:fontFamily="@font/comfortaa"
+        android:text="Workout"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/buttonNutrition"
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/buttonWorkout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#0d9614"
+        android:fontFamily="@font/comfortaa"
+        android:text="Nutrition"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/buttonProfil"
+        android:layout_width="220dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/buttonNutrition"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="#c6c41d"
+        android:fontFamily="@font/comfortaa"
+        android:text="Profil"
+        android:textSize="24sp" />
+
+</RelativeLayout>

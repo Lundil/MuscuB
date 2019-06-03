@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="test"
+        android:fontFamily="@font/comfortaa"/>
+
+    <TextView
+        android:id="@+id/textViewSexe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Sexe" />
+
+    <TextView
+        android:id="@+id/textViewAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSexe"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Age" />
+
+    <TextView
+        android:id="@+id/textViewPoids"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAge"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Poids" />
+
+    <TextView
+        android:id="@+id/textViewTaille"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPoids"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Taille" />
+
+    <TextView
+        android:id="@+id/textViewFrequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTaille"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Activité physique :" />
+
+    <ToggleButton
+        android:id="@+id/toggleMan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:checked="true"
+        android:layout_marginLeft="150dp"
+        android:layout_centerVertical="true"
+        android:textOff="Homme"
+        android:textOn="Homme"
+        android:fontFamily="@font/comfortaa"/>
+
+    <ToggleButton
+        android:id="@+id/toggleWoman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/toggleMan"
+        android:textOff="Femme"
+        android:textOn="Femme"
+        android:fontFamily="@font/comfortaa"/>
+
+    <EditText
+        android:id="@+id/editAge"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSexe"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="250dp"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Age"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editPoids"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewAge"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="250dp"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Poids"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editTaille"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewPoids"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="250dp"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:hint="Taille"
+        android:inputType="numberDecimal" />
+
+    <Spinner
+        android:id="@+id/spinnerFrequence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTaille"
+        android:layout_marginLeft="250dp"
+        android:ems="10"
+        android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewFrequence"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#2372db"
+        android:textColor="#FFFFFF"
+        android:text="Enregistrer"
+        android:fontFamily="@font/comfortaa"/>
+
+</RelativeLayout>
