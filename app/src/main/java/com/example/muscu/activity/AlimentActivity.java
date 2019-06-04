@@ -28,7 +28,6 @@ public class AlimentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aliments);
-        setTitle("Aliments");
         refresh();
     }
 

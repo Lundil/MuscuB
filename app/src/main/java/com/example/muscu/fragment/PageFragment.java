@@ -1,5 +1,6 @@
 package com.example.muscu.fragment;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,44 +38,34 @@ public class PageFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        listView = getActivity().findViewById(R.id.listAliments);
+
+        if(mPage == 1){
+            alimentModelList = AlimentModel.getAlimentsByIsMatin(true);
+        }else if(mPage == 2){
+            alimentModelList = AlimentModel.getAlimentsByIsMidi(true);
+        }else if(mPage == 3){
+            alimentModelList = AlimentModel.getAlimentsByIsDiner(true);
+        }else if(mPage == 4){
+            alimentModelList = AlimentModel.getAlimentsByIsEncas(true);
+        }
+        if(alimentModelList != null){
+            alimentListAdapter = new AlimentListAdapter(getContext(), R.layout.adapter_view_layout, alimentModelList);
+        }
+
+        if(alimentListAdapter!=null){
+            listView.setAdapter(alimentListAdapter);
+        }
+        mPage = getArguments().getInt(ARG_PAGE);
+        super.onResume();
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
         TextView textView = (TextView) view;
         listView = getActivity().findViewById(R.id.listAliments);
-        switch (mPage){
-            case 1:
-                alimentModelList = AlimentModel.getAlimentsByIsMatin(true);
-                if(alimentModelList != null){
-                    alimentListAdapter = new AlimentListAdapter(getContext(), R.layout.adapter_view_layout, alimentModelList);
-                }
-                textView.setText("Matin");
-            break;
-            case 2:
-                alimentModelList = AlimentModel.getAlimentsByIsMidi(true);
-                if(alimentModelList != null){
-                    alimentListAdapter = new AlimentListAdapter(getContext(), R.layout.adapter_view_layout, alimentModelList);
-                }
-                textView.setText("Midi");
-            break;
-            case 3:
-                alimentModelList = AlimentModel.getAlimentsByIsMidi(true);
-                if(alimentModelList != null){
-                    alimentListAdapter = new AlimentListAdapter(getContext(), R.layout.adapter_view_layout, alimentModelList);
-                }
-                textView.setText("Midi");
-            break;
-            case 4:
-                alimentModelList = AlimentModel.getAlimentsByIsDiner(true);
-                if(alimentModelList != null){
-                    alimentListAdapter = new AlimentListAdapter(getContext(), R.layout.adapter_view_layout, alimentModelList);
-                }
-                textView.setText("Soir");
-            break;
-        }
-        if(alimentListAdapter!=null && !alimentListAdapter.isEmpty()){
-            listView.setAdapter(alimentListAdapter);
-        }
         return view;
     }
 }

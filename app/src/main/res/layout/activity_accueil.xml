@@ -16,7 +16,7 @@
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/start"
+        android:id="@+id/planning"
         android:layout_width="220dp"
         android:layout_height="100dp"
         android:layout_below="@+id/appName"
@@ -31,7 +31,7 @@
         android:id="@+id/buttonWorkout"
         android:layout_width="220dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/start"
+        android:layout_below="@+id/planning"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:background="#93480e"

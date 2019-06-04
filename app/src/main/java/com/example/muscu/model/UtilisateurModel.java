@@ -11,6 +11,8 @@ public class UtilisateurModel extends Model {
 
     @Column(name = "_id")
     public Long id;
+    @Column(name = "age")
+    public String age;
     @Column(name = "sexe")
     public String sexe;
     @Column(name = "poids")
@@ -67,6 +69,14 @@ public class UtilisateurModel extends Model {
     }
     public void setObjectif(String objectif) {
         this.objectif = objectif;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }
 

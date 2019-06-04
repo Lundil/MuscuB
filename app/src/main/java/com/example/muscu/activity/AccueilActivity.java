@@ -15,6 +15,13 @@ public class AccueilActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil);
 
+        button = findViewById(R.id.planning);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openPlanning();
+            }
+        });
+
         button = findViewById(R.id.buttonProfil);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -49,6 +56,10 @@ public class AccueilActivity extends Activity {
     }
     public void openInfos() {
         Intent intent = new Intent(this, InfosActivity.class);
+        startActivity(intent);
+    }
+    public void openPlanning() {
+        Intent intent = new Intent(this, PlanningActivity.class);
         startActivity(intent);
     }
 }

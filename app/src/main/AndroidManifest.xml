@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.AlimentActivity"></activity>
-        <activity android:name=".activity.SimpleScannerActivity"></activity>
         <activity android:name=".activity.InfosActivity"></activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.PlanningActivity"></activity>
+        <activity android:name=".activity.SimpleScannerActivity"></activity>
 
-        </activity>
         <activity android:name=".activity.NutritionActivity"></activity>
         <activity android:name=".activity.PopAliment" android:theme="@style/AppTheme.PopTheme"></activity>
         <activity android:name=".activity.PopRepas" android:theme="@style/AppTheme.PopTheme"></activity>
@@ -33,7 +33,7 @@
 
 
         <meta-data android:name="AA_DB_NAME" android:value="MuscleBuildingDatabase" /> <!-- DB  name -->
-        <meta-data android:name="AA_DB_VERSION" android:value="4" /> <!-- DB Version -->
+        <meta-data android:name="AA_DB_VERSION" android:value="5" /> <!-- DB Version -->
 
         <!-- DataModel path  with package name -->
         <meta-data android:name="AA_MODELS"
@@ -44,6 +44,12 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.example.muscu"
+            android:enabled="true"
+            android:exported="false">
+        </provider>
     </application>
 
 </manifest>

@@ -11,72 +11,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:id="@+id/textViewSaisie"
+        android:id="@+id/textViewNom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:text="Nouvel Aliment"
-        android:textSize="25dp"/>
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Nom" />
 
     <EditText
         android:id="@+id/editNom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewSaisie"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="93dp"
+        android:layout_marginTop="84dp"
+        android:layout_toRightOf="@+id/textViewNom"
         android:contentDescription="Nom de l'aliment"
-        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Nom"
         android:inputType="textPersonName" />
 
-    <CheckBox android:id="@+id/checkbox_matin"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView_protein"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/editNom"
-        android:text="Matin"/>
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/textViewNom"
+        android:fontFamily="@font/comfortaa"
+        android:text="Protéines pour 100 grammes" />
 
-    <CheckBox android:id="@+id/checkbox_midi"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView_lipide"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/checkbox_matin"
-        android:text="Midi"/>
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/textView_protein"
+        android:fontFamily="@font/comfortaa"
+        android:text="Lipides pour 100 grammes" />
 
-    <CheckBox android:id="@+id/checkbox_diner"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/textView_glucide"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/checkbox_midi"
-        android:text="Diner"/>
+        android:layout_marginTop="45dp"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/textView_lipide"
+        android:fontFamily="@font/comfortaa"
+        android:text="Glucides pour 100 grammes" />
 
-    <CheckBox android:id="@+id/checkbox_encas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/checkbox_diner"
-        android:text="Encas"/>
-
-    <Spinner
-        android:id="@+id/spinnerTypeAliment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkbox_encas"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Type d'aliment (viande, féculent...)"
-        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/editProteine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinnerTypeAliment"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Proteines pour 100gr"
+        android:layout_below="@+id/textViewNom"
+        android:layout_toRightOf="@id/textView_protein"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="25dp"
+        android:ems="2"
+        android:hint="0"
         android:inputType="numberDecimal" />
 
     <EditText
@@ -84,9 +80,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editProteine"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Lipides pour 100gr"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/textView_lipide"
+        android:ems="2"
+        android:hint="0"
         android:inputType="numberDecimal" />
 
     <EditText
@@ -95,25 +93,82 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editLipide"
         android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:hint="Glucides pour 100gr"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/textView_glucide"
+        android:ems="2"
+        android:hint="0"
         android:inputType="numberDecimal" />
+
+    <CheckBox android:id="@+id/checkbox_matin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_glucide"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Matin"/>
+
+    <CheckBox android:id="@+id/checkbox_midi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_matin"
+        android:layout_below="@+id/textView_glucide"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Midi"/>
+
+    <CheckBox android:id="@+id/checkbox_diner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_midi"
+        android:layout_below="@+id/textView_glucide"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Diner"/>
+
+    <CheckBox android:id="@+id/checkbox_encas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_diner"
+        android:layout_below="@+id/textView_glucide"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Encas"/>
+
+    <Spinner
+        android:id="@+id/spinnerTypeAliment"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkbox_encas"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Type d'aliment (viande, féculent...)"
+        android:inputType="numberDecimal" />
+
 
     <Button
         android:id="@+id/save"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/scanner"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/spinnerTypeAliment"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:layout_toRightOf="@+id/scanner"
+        android:background="#2372db"
+        android:textColor="#FFFFFF"
         android:text="Enregistrer" />
 
     <Button
         android:id="@+id/scanner"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Scanner"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/editGlucide"
-        android:onClick="scan"/>
+        android:layout_below="@+id/spinnerTypeAliment"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:background="#2372db"
+        android:textColor="#FFFFFF"
+        android:onClick="scan"
+        android:text="Scanner" />
 
 </RelativeLayout>
