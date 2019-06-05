@@ -39,6 +39,10 @@ public class AlimentModel extends Model {
         return new Select().from(AlimentModel.class).orderBy("nom").execute();
     }
 
+    public static List<AlimentModel> getAlimentsByType(String type){
+        return new Select().from(AlimentModel.class).where("typeAliment = ?", type).orderBy("nom").execute();
+    }
+
     public static List<AlimentModel> getAlimentsByIsMatin(Boolean isMatin){
         return new Select().from(AlimentModel.class).where("isMatin = ?", isMatin).orderBy("nom").execute();
     }

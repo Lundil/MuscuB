@@ -5,8 +5,16 @@
         <item>Laitage</item>
         <item>Légume</item>
         <item>Poisson</item>
+        <item>Boisson</item>
         <item>Sauce</item>
         <item>Viande</item>
+        <item>Fruit</item>
+    </string-array>
+    <string-array name="type_repas_array">
+        <item>Matin</item>
+        <item>Midi</item>
+        <item>Soir</item>
+        <item>Collation</item>
     </string-array>
     <string-array name="frequence_activite_physique">
         <item>Rare</item>

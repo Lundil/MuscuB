@@ -6,30 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <ListView
-        android:id="@+id/listAliments"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/sliding_tabs"/>
-    
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/GridLayout1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tabMode="fixed" />
+        android:columnCount="3"
+        android:rowCount="3"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        tools:context=".GridLayoutActivity">
+
+        <Button
+            android:id="@+id/buttonViande"
+            android:layout_gravity="center"
+            android:text="Viande" />
+
+        <Button
+            android:id="@+id/buttonPoisson"
+            android:layout_gravity="center"
+            android:text="Poisson" />
+
+        <Button
+            android:id="@+id/buttonLaitage"
+            android:layout_gravity="center"
+            android:text="Laitage" />
+
+        <Button
+            android:id="@+id/buttonFeculent"
+            android:layout_gravity="center"
+            android:text="Feculent" />
+
+        <Button
+            android:id="@+id/buttonBoisson"
+            android:layout_gravity="center"
+            android:text="Boisson" />
+
+        <Button
+            android:id="@+id/buttonSauce"
+            android:layout_gravity="center"
+            android:text="Sauce" />
+
+        <Button
+            android:id="@+id/buttonLegume"
+            android:layout_gravity="center"
+            android:text="Legume" />
+
+        <Button
+            android:id="@+id/buttonFruit"
+            android:layout_gravity="center"
+            android:text="Fruit" />
+
+    </GridLayout>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/addAliment"
             android:layout_width="wrap_content"

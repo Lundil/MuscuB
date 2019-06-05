@@ -1,23 +1,23 @@
 package com.example.muscu.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.muscu.R;
 import com.example.muscu.model.AlimentModel;
 import com.google.zxing.Result;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -30,9 +30,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class SimpleScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler  {
 
     private Button save;
-    private Bitmap bmp;
     private Spinner spinnerTypeAliment;
-    private ImageView imageView;
     private EditText editNom;
     private EditText editProteine;
     private EditText editGlucide;
@@ -46,10 +44,11 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_scan);
         setTitle("Nouvel aliment");
 
-        imageView = findViewById(R.id.imageView);
         editNom = findViewById(R.id.editNom);
         editProteine = findViewById(R.id.editProteine);
         editGlucide = findViewById(R.id.editGlucide);
@@ -69,21 +68,23 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AlimentModel alimentModel = new AlimentModel();
-                alimentModel.setNom(editNom.getText().toString());
-                alimentModel.setProteine(Double.parseDouble(editProteine.getText().toString()));
-                alimentModel.setGlucide(Double.parseDouble(editGlucide.getText().toString()));
-                alimentModel.setLipide(Double.parseDouble(editLipide.getText().toString()));
-                alimentModel.setTypeAliment(spinnerTypeAliment.getSelectedItem().toString());
-                alimentModel.setMatin(checkMatin.isChecked());
-                alimentModel.setMidi(checkMidi.isChecked());
-                alimentModel.setDiner(checkDiner.isChecked());
-                alimentModel.setEncas(checkEncas.isChecked());
-                alimentModel.save();
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("result",1);
-                setResult(Activity.RESULT_OK,returnIntent);
-                finish();
+                if(!isGUIFilled()){
+                    Toast.makeText(getApplicationContext(), "Renseigner tous les champs", Toast.LENGTH_SHORT).show();
+                }else{
+                    AlimentModel alimentModel = new AlimentModel();
+                    alimentModel.setNom(editNom.getText().toString());
+                    alimentModel.setProteine(Double.parseDouble(editProteine.getText().toString()));
+                    alimentModel.setGlucide(Double.parseDouble(editGlucide.getText().toString()));
+                    alimentModel.setLipide(Double.parseDouble(editLipide.getText().toString()));
+                    alimentModel.setTypeAliment(spinnerTypeAliment.getSelectedItem().toString());
+                    alimentModel.setMatin(checkMatin.isChecked());
+                    alimentModel.setMidi(checkMidi.isChecked());
+                    alimentModel.setDiner(checkDiner.isChecked());
+                    alimentModel.setEncas(checkEncas.isChecked());
+                    alimentModel.save();
+                    finish();
+                }
+
             }
         });
 
@@ -93,6 +94,14 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
             fillFormWithDataFromBarCode();
         }
     }
+
+    private boolean isGUIFilled() {
+        return !editNom.getText().toString().isEmpty() &&
+        !editProteine.getText().toString().isEmpty() &&
+        !editGlucide.getText().toString().isEmpty() &&
+        !editLipide.getText().toString().isEmpty();
+    }
+
     public void scan(View view) {
         fillFormWithDataFromBarCode();
         //TODO ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1);
@@ -124,40 +133,47 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
             HttpURLConnection con = null;
             public void run() {
                 try  {
-                    URL url = new URL("http://world.openfoodfacts.org/api/v0/product/"+codeBarre+".json");
-                    con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("GET");
-                    BufferedReader in = new BufferedReader(
-                            new InputStreamReader(con.getInputStream()));
-                    String inputLine;
-                    StringBuffer content = new StringBuffer();
-                    while ((inputLine = in.readLine()) != null) {
-                        content.append(inputLine);
-                    }
-                    in.close();
-                    //Traitement json
-                    String json = content.toString();
-                    String[] splitJson = json.split(",");
-                    ArrayList<String> note = new ArrayList<>();
-                    for (String couple : splitJson) {
-                        couple = couple.replaceAll("\\}","").replaceAll("\\{","");
-                        if(couple.contains("\"proteins_100g\"")){
-                            couple = couple.replaceAll("\"","");
-                            protein=couple.split(":")[1];
-                        }else if(couple.contains("\"fat_100g\"")){
-                            couple = couple.replaceAll("\"","");
-                            lipide=couple.split(":")[1];
-                        }else if(couple.contains("\"carbohydrates_100g\"")){
-                            couple = couple.replaceAll("\"","");
-                            glucide=couple.split(":")[1];
-                        }else if(couple.contains("\"product_name_fr\"")){
-                            couple = couple.replaceAll("\"","");
-                            nom=couple.split(":")[1];
-                        }else if(couple.contains("\"image_url\"")){
-                            couple = couple.replaceAll("\"","");
-                            imageUrl="http"+couple.split("http")[1];
-                            url = new URL(imageUrl);
-                            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    URL url;
+                    String inputLine, json;
+                    BufferedReader in;
+                    StringBuffer content;
+                    String[] splitJson;
+                    ArrayList<String> note;
+                    for (int i=0; i<3;i++){
+                        url = new URL("http://world.openfoodfacts.org/api/v0/product/"+codeBarre+".json");
+                        con = (HttpURLConnection) url.openConnection();
+                        con.setRequestMethod("GET");
+                        in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                        content = new StringBuffer();
+                        while ((inputLine = in.readLine()) != null) {
+                            content.append(inputLine);
+                        }
+                        in.close();
+                        //Traitement json
+                        json = content.toString();
+                        splitJson = json.split(",");
+                        note = new ArrayList<>();
+                        for (String couple : splitJson) {
+                            couple = couple.replaceAll("\\}","").replaceAll("\\{","");
+                            if(couple.contains("\"proteins_100g\"")){
+                                couple = couple.replaceAll("\"","");
+                                if(NumberUtils.isCreatable(couple.split(":")[1])){
+                                    protein=couple.split(":")[1];
+                                }
+                            }else if(couple.contains("\"fat_100g\"")){
+                                couple = couple.replaceAll("\"","");
+                                if(NumberUtils.isCreatable(couple.split(":")[1])){
+                                    lipide=couple.split(":")[1];
+                                }
+                            }else if(couple.contains("\"carbohydrates_100g\"")){
+                                couple = couple.replaceAll("\"","");
+                                if(NumberUtils.isCreatable(couple.split(":")[1])){
+                                    glucide=couple.split(":")[1];
+                                }
+                            }else if(couple.contains("\"product_name_fr\"")){
+                                couple = couple.replaceAll("\"","");
+                                nom=couple.split(":")[1];
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -174,12 +190,14 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
             e.printStackTrace();
         }
         //Pré-remplir les champs
-        editNom.setText(nom);
-        editProteine.setText(protein);
-        editGlucide.setText(glucide);
-        editLipide.setText(lipide);
-
-        imageView.setImageBitmap(bmp);
+        if(nom.isEmpty() && protein.isEmpty() && glucide.isEmpty() && lipide.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Aucune informations trouvées", Toast.LENGTH_SHORT).show();
+        }else{
+            editNom.setText(nom);
+            editProteine.setText(protein);
+            editGlucide.setText(glucide);
+            editLipide.setText(lipide);
+        }
     }
 
 }

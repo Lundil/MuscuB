@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:text="Préparez vos repas"
+        android:text="Nutrition"
         android:fontFamily="@font/comfortaa"
         android:textSize="30sp" />
 
