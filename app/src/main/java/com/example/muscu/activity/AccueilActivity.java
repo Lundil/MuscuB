@@ -2,28 +2,30 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
+
 import com.example.muscu.R;
+import com.example.muscu.model.AlimentModel;
+import com.example.muscu.model.UtilisateurModel;
+
+import java.util.List;
 
 public class AccueilActivity extends Activity {
 
     private Button button;
+    private boolean isUserCreated;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_accueil);
-        button = findViewById(R.id.planning);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                openPlanning();
-            }
-        });
 
         button = findViewById(R.id.buttonProfil);
         button.setOnClickListener(new View.OnClickListener() {
@@ -33,11 +35,23 @@ public class AccueilActivity extends Activity {
         });
 
         button = findViewById(R.id.buttonNutrition);
+        List<UtilisateurModel> list = UtilisateurModel.getAllUtilisateurs();
+        isUserCreated = list != null && !list.isEmpty();
+        if(!isUserCreated){
+            button.setBackgroundColor(Color.GRAY);
+        }else{
+            button.setBackgroundColor(Color.parseColor("#ff480c"));
+        }
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                openNutrition();
+                if(isUserCreated){
+                    openNutrition();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Renseignez votre profil avant de préparer votre diète", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
 
         button = findViewById(R.id.buttonWorkout);
         button.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +61,6 @@ public class AccueilActivity extends Activity {
         });
 
     }
-
 
     public void openNutrition() {
         Intent intent = new Intent(this, NutritionActivity.class);
@@ -61,8 +74,27 @@ public class AccueilActivity extends Activity {
         Intent intent = new Intent(this, InfosActivity.class);
         startActivity(intent);
     }
-    public void openPlanning() {
-        Intent intent = new Intent(this, PlanningActivity.class);
-        startActivity(intent);
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            button = findViewById(R.id.buttonNutrition);
+            List<UtilisateurModel> list = UtilisateurModel.getAllUtilisateurs();
+            isUserCreated = list != null && !list.isEmpty();
+            if(!isUserCreated){
+                button.setBackgroundColor(Color.GRAY);
+            }else{
+                button.setBackgroundColor(Color.parseColor("#ff480c"));
+            }
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(isUserCreated){
+                        openNutrition();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Renseignez votre profil avant de préparer votre diète", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 }

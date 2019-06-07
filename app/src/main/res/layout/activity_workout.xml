@@ -1,33 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:layout_gravity="bottom"
-    android:weightSum="100">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/buttonWorkoutExercices"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="33.33"
-        android:background="@drawable/exercices"
-        android:text="Gestion des Exercices"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:alpha="0.8"/>
+<TextView
+    android:id="@+id/textViewTitreWorkout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="100dp"
+    android:text="Musculation"
+    android:fontFamily="@font/comfortaa"
+    android:textSize="30sp" />
 
-    <Button
-        android:id="@+id/buttonWorkoutManagment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@+id/buttonWorkoutExercices"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="33.33"
-        android:background="@drawable/workout"
-        android:text="Programme d'entrainement"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:alpha="0.8"/>
+<Button
+    android:id="@+id/buttonWorkoutExercices"
+    android:layout_width="220dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="100dp"
+    android:layout_below="@+id/textViewTitreWorkout"
+    android:layout_centerHorizontal="true"
+    android:text="Exercices"
+    android:background="#77d11d"
+    android:textColor="#FFFFFF"
+    android:textSize="24sp"
+    android:fontFamily="@font/comfortaa"/>
 
-</LinearLayout>
+<Button
+    android:id="@+id/buttonWorkoutManagment"
+    android:layout_width="220dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/buttonWorkoutExercices"
+    android:layout_centerHorizontal="true"
+    android:text="Programme"
+    android:background="#77d11d"
+    android:textColor="#FFFFFF"
+    android:textSize="24sp"
+    android:fontFamily="@font/comfortaa"/>
+
+<Button
+    android:id="@+id/buttonPlanning"
+    android:layout_width="220dp"
+    android:layout_height="100dp"
+    android:layout_marginTop="10dp"
+    android:layout_below="@+id/buttonWorkoutManagment"
+    android:layout_centerHorizontal="true"
+    android:text="Planning"
+    android:background="#77d11d"
+    android:textColor="#FFFFFF"
+    android:textSize="24sp"
+    android:fontFamily="@font/comfortaa"/>
+
+</RelativeLayout>

@@ -7,19 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
+import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
+import com.example.muscu.model.RepasModel;
 
 import java.util.List;
 
 public class AlimentActivity extends AppCompatActivity {
 
     private FloatingActionButton addAliment;
-    private Button button;
     private ListView listView;
     private List<AlimentModel> alimentModelList;
     private AlimentListAdapter alimentListAdapter;
@@ -37,65 +37,28 @@ public class AlimentActivity extends AppCompatActivity {
                 openSaisieAliment();
             }
         });
-        button = findViewById(R.id.buttonViande);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Viande");
-            }
-        });
-        button = findViewById(R.id.buttonPoisson);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Poisson");
-            }
-        });
-        button = findViewById(R.id.buttonLegume);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Légume");
-            }
-        });
-        button = findViewById(R.id.buttonLaitage);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Laitage");
-            }
-        });
-        button = findViewById(R.id.buttonBoisson);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Boisson");
-            }
-        });
-        button = findViewById(R.id.buttonFeculent);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Féculent");
-            }
-        });
-        button = findViewById(R.id.buttonFruit);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Fruit");
-            }
-        });
-        button = findViewById(R.id.buttonSauce);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                openListAliment("Sauce");
-            }
-        });
-    }
-
-    private void openListAliment(String typeAliment){
-        Intent intent = new Intent(this, AlimentsListActivity.class);
-        intent.putExtra("typeAliment", typeAliment);
-        startActivityForResult(intent,1);
+        listView = findViewById(R.id.listAliments);
+        alimentModelList = AlimentModel.getAllAliments();
+        if(alimentModelList!=null){
+            alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
+            listView.setAdapter(alimentListAdapter);
+        }
     }
 
     private void openSaisieAliment(){
         Intent intent = new Intent(this, SimpleScannerActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            listView = findViewById(R.id.listAliments);
+            alimentModelList = AlimentModel.getAllAliments();
+            if(alimentModelList!=null){
+                alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
+                listView.setAdapter(alimentListAdapter);
+            }
+        }
+    }
 }

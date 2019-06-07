@@ -30,6 +30,7 @@ public class InfosActivity extends AppCompatActivity {
     private Button buttonSave;
     private Spinner spinnerFrequenceActivite;
     private Spinner spinnerObjectif;
+    private Spinner spinnerNbRepas;
     private ToggleButton toggleButtonMan;
     private ToggleButton toggleButtonWoman;
     private EditText editTextAge;
@@ -46,6 +47,7 @@ public class InfosActivity extends AppCompatActivity {
 
         spinnerFrequenceActivite = findViewById(R.id.spinnerFrequence);
         spinnerObjectif = findViewById(R.id.spinnerObjectif);
+        spinnerNbRepas = findViewById(R.id.spinnerNbRepas);
         toggleButtonMan = findViewById(R.id.toggleMan);
         toggleButtonWoman = findViewById(R.id.toggleWoman);
         buttonSave = findViewById(R.id.buttonSave);
@@ -62,6 +64,9 @@ public class InfosActivity extends AppCompatActivity {
         adapter = ArrayAdapter.createFromResource(this, R.array.frequence_activite_physique, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFrequenceActivite.setAdapter(adapter);
+        adapter = ArrayAdapter.createFromResource(this, R.array.nombre_repas, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerNbRepas.setAdapter(adapter);
 
         //Chargement de l'utilisateur
         users = UtilisateurModel.getAllUtilisateurs();
@@ -69,39 +74,11 @@ public class InfosActivity extends AppCompatActivity {
             user = users.get(0);
         }
 
-        /*editTextAge.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(user!=null && hasGUIChanged()){
-                    buttonSave.setVisibility(View.VISIBLE);
-                }else{
-                    buttonSave.setVisibility(View.GONE);
-                }
-            }
-        });
-        editTextPoids.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(user!=null && hasGUIChanged()){
-                    buttonSave.setVisibility(View.VISIBLE);
-                }else{
-                    buttonSave.setVisibility(View.GONE);
-                }
-            }
-        });
-        editTextAge.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(user!=null && hasGUIChanged()){
-                    buttonSave.setVisibility(View.VISIBLE);
-                }else{
-                    buttonSave.setVisibility(View.GONE);
-                }
-            }
-        });*/
         toggleButtonMan.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(user!=null && !"M".equalsIgnoreCase(user.sexe)){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(!"M".equalsIgnoreCase(user.sexe)){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
@@ -111,7 +88,9 @@ public class InfosActivity extends AppCompatActivity {
         });
         toggleButtonWoman.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(user!=null && !"F".equalsIgnoreCase(user.sexe)){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(!"F".equalsIgnoreCase(user.sexe)){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
@@ -121,7 +100,9 @@ public class InfosActivity extends AppCompatActivity {
         });
         spinnerObjectif.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(user!=null && hasGUIChanged()){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
@@ -135,7 +116,25 @@ public class InfosActivity extends AppCompatActivity {
         });
         spinnerFrequenceActivite.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                if(user!=null && hasGUIChanged()){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else{
+                    buttonSave.setVisibility(View.GONE);
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+        spinnerNbRepas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
@@ -179,6 +178,16 @@ public class InfosActivity extends AppCompatActivity {
             }else if("Muscler".equalsIgnoreCase(user.getObjectif())){
                 spinnerObjectif.setSelection(2);
             }
+
+            if("3".equalsIgnoreCase(user.getNbRepas())){
+                spinnerNbRepas.setSelection(0);
+            }else if("4".equalsIgnoreCase(user.getNbRepas())){
+                spinnerNbRepas.setSelection(1);
+            }else if("5".equalsIgnoreCase(user.getNbRepas())){
+                spinnerNbRepas.setSelection(2);
+            }else if("6".equalsIgnoreCase(user.getNbRepas())){
+                spinnerNbRepas.setSelection(3);
+            }
         }else{
             //Pas d'utilisateur
             //Button save displayed
@@ -197,7 +206,8 @@ public class InfosActivity extends AppCompatActivity {
                     }
                     user.setActivitePhysique(spinnerFrequenceActivite.getSelectedItem().toString());
                     user.setAge(editTextAge.getText().toString());
-                    user.setObjectif(spinnerObjectif.getSelectedItem() .toString());
+                    user.setObjectif(spinnerObjectif.getSelectedItem().toString());
+                    user.setNbRepas(spinnerNbRepas.getSelectedItem().toString());
                     user.setPoids(Double.parseDouble(editTextPoids.getText().toString()));
                     user.setSexe((toggleButtonMan.isChecked()) ? "M" : "F");
                     user.setTaille(Double.parseDouble(editTextTaille.getText().toString()));
@@ -278,6 +288,7 @@ public class InfosActivity extends AppCompatActivity {
                 !(user.getPoids() == Double.parseDouble(editTextPoids.getText().toString())) ||
                 !(user.getTaille() == Double.parseDouble(editTextTaille.getText().toString())) ||
                 !(user.getActivitePhysique().equalsIgnoreCase(spinnerFrequenceActivite.getSelectedItem().toString())) ||
-                !(user.getObjectif().equalsIgnoreCase(spinnerObjectif.getSelectedItem().toString()));
+                !(user.getObjectif().equalsIgnoreCase(spinnerObjectif.getSelectedItem().toString())) ||
+                !(user.getNbRepas().equalsIgnoreCase(spinnerNbRepas.getSelectedItem().toString()));
     }
 }

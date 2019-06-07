@@ -25,6 +25,8 @@ public class UtilisateurModel extends Model {
     public String activitePhysique;
     @Column(name = "objectif")
     public String objectif;
+    @Column(name = "nbRepas")
+    public String nbRepas;
 
     public UtilisateurModel(){
 
@@ -77,6 +79,14 @@ public class UtilisateurModel extends Model {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getNbRepas() {
+        return nbRepas;
+    }
+
+    public void setNbRepas(String nbRepas) {
+        this.nbRepas = nbRepas;
     }
 }
 

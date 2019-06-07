@@ -16,25 +16,14 @@
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/planning"
+        android:id="@+id/buttonWorkout"
         android:layout_width="220dp"
         android:layout_height="100dp"
         android:layout_below="@+id/appName"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:background="#e57622"
-        android:fontFamily="@font/comfortaa"
-        android:text="Planning"
-        android:textSize="24sp" />
-
-    <Button
-        android:id="@+id/buttonWorkout"
-        android:layout_width="220dp"
-        android:layout_height="100dp"
-        android:layout_below="@+id/planning"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:background="#93480e"
+        android:background="#ff480c"
+        android:textColor="#FFFFFF"
         android:fontFamily="@font/comfortaa"
         android:text="Workout"
         android:textSize="24sp" />
@@ -46,7 +35,8 @@
         android:layout_below="@+id/buttonWorkout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="#0d9614"
+        android:background="#ff480c"
+        android:textColor="#FFFFFF"
         android:fontFamily="@font/comfortaa"
         android:text="Nutrition"
         android:textSize="24sp" />
@@ -58,7 +48,8 @@
         android:layout_below="@+id/buttonNutrition"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:background="#c6c41d"
+        android:background="#ff480c"
+        android:textColor="#FFFFFF"
         android:fontFamily="@font/comfortaa"
         android:text="Profil"
         android:textSize="24sp" />
