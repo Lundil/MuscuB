@@ -29,7 +29,6 @@ public class AddMealActivity extends Activity {
     private CheckBox checkMatin;
     private CheckBox checkMidi;
     private CheckBox checkDiner;
-    private CheckBox checkEncas;
     private ListView listView,listAlimentsSelected;
     private AlimentModel alimentSelected;
     private List<AlimentModel> alimentModelList, alimentModelSelected = new ArrayList<>();
@@ -48,7 +47,6 @@ public class AddMealActivity extends Activity {
         checkMatin = findViewById(R.id.checkbox_matin);
         checkMidi = findViewById(R.id.checkbox_midi);
         checkDiner = findViewById(R.id.checkbox_diner);
-        checkEncas = findViewById(R.id.checkbox_encas);
         save = findViewById(R.id.save);
         alimentModelList = AlimentModel.getAllAliments();
         if(alimentModelList!=null){
@@ -78,7 +76,6 @@ public class AddMealActivity extends Activity {
                     repasModel.setMatin(checkMatin.isChecked());
                     repasModel.setMidi(checkMidi.isChecked());
                     repasModel.setDiner(checkDiner.isChecked());
-                    repasModel.setEncas(checkEncas.isChecked());
                     repasModel.save();
                     finish();
                 }
@@ -119,7 +116,7 @@ public class AddMealActivity extends Activity {
 
     private boolean isGUIFilled() {
         return !editNom.getText().toString().isEmpty() &&
-                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked() || checkEncas.isChecked())
+                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked())
                 && !alimentModelSelected.isEmpty();
     }
 }

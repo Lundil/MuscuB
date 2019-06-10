@@ -12,25 +12,16 @@ public class RepasModel extends Model {
 
     @Column(name = "_id")
     public Long id;
-
     @Column(name = "nom")
     public String nom;
-
-    @Column(name = "typeRepas")
-    public String typeRepas;
-
     @Column(name = "description")
     public String description;
-
     @Column(name = "proteineTotal")
     public Double proteineTotal;
-
     @Column(name = "glucideTotal")
     public Double glucideTotal;
-
     @Column(name = "lipideTotal")
     public Double lipideTotal;
-
     @Column(name = "isMatin")
     public Boolean isMatin;
     @Column(name = "isMidi")
@@ -45,6 +36,16 @@ public class RepasModel extends Model {
 
     public RepasModel(){
 
+    }
+
+    public static List<RepasModel> getRepasByIsMidi(Boolean isMidi){
+        return new Select().from(RepasModel.class).where("isMidi = ?", isMidi).orderBy("nom").execute();
+    }
+    public static List<RepasModel> getRepasByIsMatin(Boolean isMatin){
+        return new Select().from(RepasModel.class).where("isMidi = ?", isMatin).orderBy("nom").execute();
+    }
+    public static List<RepasModel> getRepasByIsDiner(Boolean isDiner){
+        return new Select().from(RepasModel.class).where("isMidi = ?", isDiner).orderBy("nom").execute();
     }
 
     public static List<RepasModel> getAllRepas(){
@@ -63,14 +64,6 @@ public class RepasModel extends Model {
 
     public void setNom(String nom) {
         this.nom = nom;
-    }
-
-    public String getTypeRepas() {
-        return typeRepas;
-    }
-
-    public void setTypeRepas(String typeRepas) {
-        this.typeRepas = typeRepas;
     }
 
     public String getDescription() {

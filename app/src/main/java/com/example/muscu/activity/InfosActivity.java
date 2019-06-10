@@ -157,19 +157,17 @@ public class InfosActivity extends AppCompatActivity {
             }else if("F".equalsIgnoreCase(user.getSexe())){
                 setGUIFemale();
             }
-            editTextAge.setText(user.getAge());
+            editTextAge.setText(user.getAge().toString());
             editTextPoids.setText(user.getPoids().toString());
             editTextTaille.setText(user.getTaille().toString());
             if("Rare".equalsIgnoreCase(user.getActivitePhysique())){
                 spinnerFrequenceActivite.setSelection(0);
             }else if("1-3".equalsIgnoreCase(user.getActivitePhysique())){
                 spinnerFrequenceActivite.setSelection(1);
-            }else if("3-5".equalsIgnoreCase(user.getActivitePhysique())){
+            }else if("4-5".equalsIgnoreCase(user.getActivitePhysique())){
                 spinnerFrequenceActivite.setSelection(2);
-            }else if("5-7".equalsIgnoreCase(user.getActivitePhysique())){
-                spinnerFrequenceActivite.setSelection(3);
             }else{
-                spinnerFrequenceActivite.setSelection(4);
+                spinnerFrequenceActivite.setSelection(3);
             }
             if("Mincir".equalsIgnoreCase(user.getObjectif())){
                 spinnerObjectif.setSelection(0);
@@ -205,7 +203,7 @@ public class InfosActivity extends AppCompatActivity {
                         user = new UtilisateurModel();
                     }
                     user.setActivitePhysique(spinnerFrequenceActivite.getSelectedItem().toString());
-                    user.setAge(editTextAge.getText().toString());
+                    user.setAge(Integer.valueOf(editTextAge.getText().toString()));
                     user.setObjectif(spinnerObjectif.getSelectedItem().toString());
                     user.setNbRepas(spinnerNbRepas.getSelectedItem().toString());
                     user.setPoids(Double.parseDouble(editTextPoids.getText().toString()));
@@ -224,35 +222,39 @@ public class InfosActivity extends AppCompatActivity {
                 Log.i("Key:", cs.toString());
             }
             public void afterTextChanged(Editable editable) {
-                if(user!=null && hasGUIChanged()){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
                 }
             }
-            public void beforeTextChanged(CharSequence cs, int i, int j, int
-                    k) { }
+            public void beforeTextChanged(CharSequence cs, int i, int j, int k) { }
         });
         editTextPoids.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence cs, int s, int b, int c) {
                 Log.i("Key:", cs.toString());
             }
             public void afterTextChanged(Editable editable) {
-                if(user!=null && hasGUIChanged()){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
                 }
             }
-            public void beforeTextChanged(CharSequence cs, int i, int j, int
-                    k) { }
+            public void beforeTextChanged(CharSequence cs, int i, int j, int k) { }
         });
         editTextTaille.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence cs, int s, int b, int c) {
                 Log.i("Key:", cs.toString());
             }
             public void afterTextChanged(Editable editable) {
-                if(user!=null && hasGUIChanged()){
+                if(user==null){
+                    buttonSave.setVisibility(View.VISIBLE);
+                }else if(hasGUIChanged()){
                     buttonSave.setVisibility(View.VISIBLE);
                 }else{
                     buttonSave.setVisibility(View.GONE);
@@ -284,7 +286,7 @@ public class InfosActivity extends AppCompatActivity {
     }
 
     private boolean hasGUIChanged(){
-        return  !(user.getAge().equalsIgnoreCase(editTextAge.getText().toString())) ||
+        return  (user.getAge() != Integer.valueOf(editTextAge.getText().toString())) ||
                 !(user.getPoids() == Double.parseDouble(editTextPoids.getText().toString())) ||
                 !(user.getTaille() == Double.parseDouble(editTextTaille.getText().toString())) ||
                 !(user.getActivitePhysique().equalsIgnoreCase(spinnerFrequenceActivite.getSelectedItem().toString())) ||

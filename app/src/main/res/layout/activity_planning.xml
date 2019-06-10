@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
 
-
-
-    <Button
-        android:id="@+id/buttonCourses"
-        android:layout_width="220dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="150dp"
+    <TextView
+        android:id="@+id/textViewTitreSemaine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Courses"
-        android:background="#ad3589"
-        android:textSize="24sp"
-        android:fontFamily="@font/comfortaa"/>
+        android:layout_marginTop="100dp"
+        android:text="Gérer votre semaine"
+        android:fontFamily="@font/comfortaa"
+        android:textSize="30sp" />
+    <ListView
+        android:id="@+id/listJour"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewTitreSemaine"/>
 
 </RelativeLayout>

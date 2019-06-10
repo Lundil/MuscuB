@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.muscu.R;
-import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.UtilisateurModel;
 
 import java.util.List;
@@ -72,7 +71,7 @@ public class AccueilActivity extends Activity {
     }
     public void openInfos() {
         Intent intent = new Intent(this, InfosActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

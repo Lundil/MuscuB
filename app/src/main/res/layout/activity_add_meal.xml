@@ -28,13 +28,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editDescription"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="55dp"
+        android:layout_toLeftOf="@+id/checkbox_midi"
         android:text="Matin"/>
 
     <CheckBox android:id="@+id/checkbox_midi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/checkbox_matin"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/editDescription"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
@@ -49,15 +49,6 @@
         android:layout_marginLeft="10dp"
         android:text="Diner"/>
 
-    <CheckBox android:id="@+id/checkbox_encas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/checkbox_diner"
-        android:layout_below="@+id/editDescription"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:text="Encas"/>
-
     <TextView
         android:id="@+id/textViewAlimentsDisponibles"
         android:layout_width="300dp"
@@ -65,7 +56,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="Aliments disponibles : "
-        android:layout_below="@+id/checkbox_encas"/>
+        android:layout_below="@+id/checkbox_diner"/>
 
     <ListView
         android:id="@+id/listAliments"

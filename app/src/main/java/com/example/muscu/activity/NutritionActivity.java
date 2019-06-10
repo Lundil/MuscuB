@@ -20,7 +20,7 @@ import java.util.List;
 public class NutritionActivity extends AppCompatActivity {
 
     private Button button;
-    private boolean isAlimentPresent, isPetitDejeunerPresent;
+    private boolean isAlimentPresent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,19 +56,41 @@ public class NutritionActivity extends AppCompatActivity {
             }
         });
         button = findViewById(R.id.buttonPlanning);
+        String erreur = isConfitionPlanningOK();
+        if(erreur.isEmpty()){
+            button.setBackgroundColor(Color.parseColor("#77d11d"));
+        }else{
+            button.setBackgroundColor(Color.GRAY);
+        }
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String erreur = "";
-                if(isPetitDejeunerPresent){
-                    erreur+="Ajouter 1 petit dejeuner avant de planifier votre diète";
-                }
+                String erreur = isConfitionPlanningOK();
                 if(erreur.isEmpty()){
                     openPlanning();
+                    button.setBackgroundColor(Color.parseColor("#77d11d"));
                 }else{
+                    button.setBackgroundColor(Color.GRAY);
                     Toast.makeText(getApplicationContext(), erreur, Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        button = findViewById(R.id.buttonRepas);
+        List<AlimentModel> listAliment = AlimentModel.getAllAliments();
+        isAlimentPresent = listAliment != null && !listAliment.isEmpty();
+        if(!isAlimentPresent){
+            button.setBackgroundColor(Color.GRAY);
+        }else{
+            button.setBackgroundColor(Color.parseColor("#77d11d"));
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if(isAlimentPresent){
+                        openRepas();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Ajouter des aliments avant de préparer vos repas", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
     }
 
     public void openPlanning() {
@@ -77,16 +99,16 @@ public class NutritionActivity extends AppCompatActivity {
     }
     public void openRepas() {
         Intent intent = new Intent(this, RepasActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,2);
     }
     public void openAliments() {
         Intent intent = new Intent(this, AlimentActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,1);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            button = findViewById(R.id.buttonAliments);
+            button = findViewById(R.id.buttonRepas);
             List<AlimentModel> list = AlimentModel.getAllAliments();
             isAlimentPresent = list != null && !list.isEmpty();
             if(!isAlimentPresent){
@@ -103,6 +125,52 @@ public class NutritionActivity extends AppCompatActivity {
                     }
                 });
             }
+        }else if(requestCode == 2){
+            button = findViewById(R.id.buttonPlanning);
+            String erreur = isConfitionPlanningOK();
+            if(erreur.isEmpty()){
+                button.setBackgroundColor(Color.parseColor("#77d11d"));
+            }else{
+                button.setBackgroundColor(Color.GRAY);
+            }
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    String erreur = isConfitionPlanningOK();
+                    if(erreur.isEmpty()){
+                        openPlanning();
+                        button.setBackgroundColor(Color.parseColor("#77d11d"));
+                    }else{
+                        button.setBackgroundColor(Color.GRAY);
+                        Toast.makeText(getApplicationContext(), erreur, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
+    }
+
+    private String isConfitionPlanningOK(){
+        String erreur = "";
+        //Tester 1 PDJ, 1 MIDI, 1 DINER, 1 collation que lipide, 1 collation que lipide, 1 collation que glucide
+        List<AlimentModel> listAlimentsEncas = AlimentModel.getAlimentsByIsEncas(true);
+        List<RepasModel> listdwfg = RepasModel.getAllRepas();
+        List<RepasModel> listRepasMatin = RepasModel.getRepasByIsMatin(true);
+        List<RepasModel> listRepasMidi = RepasModel.getRepasByIsMidi(true);
+        List<RepasModel> listRepasDiner =RepasModel.getRepasByIsDiner(true);
+        //Check
+        if(listAlimentsEncas.isEmpty()){
+            erreur+="Manque un encas\n";
+        }
+        if(listRepasMatin.isEmpty()){
+            erreur+="Manque un petit déjeuner\n";
+
+        }
+        if(listRepasMidi.isEmpty()){
+            erreur+="Manque un déjeuner\n";
+
+        }
+        if(listRepasDiner.isEmpty()){
+            erreur+="Manque un diner\n";
+        }
+        return erreur.trim();
     }
 }

@@ -11,9 +11,7 @@ import android.widget.ListView;
 
 import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
-import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
-import com.example.muscu.model.RepasModel;
 
 import java.util.List;
 
