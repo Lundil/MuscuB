@@ -21,10 +21,11 @@
         </activity>
         <activity android:name=".activity.AddMealActivity"></activity>
         <activity android:name=".activity.AlimentActivity"></activity>
+        <activity android:name=".activity.ScannerActivity"></activity>
         <activity android:name=".activity.InfosActivity"></activity>
         <activity android:name=".activity.MainActivity"></activity>
         <activity android:name=".activity.PlanningActivity"></activity>
-        <activity android:name=".activity.SimpleScannerActivity"></activity>
+        <activity android:name=".activity.AddFoodActivity"></activity>
 
         <activity android:name=".activity.NutritionActivity"></activity>
         <activity android:name=".activity.RepasActivity"></activity>

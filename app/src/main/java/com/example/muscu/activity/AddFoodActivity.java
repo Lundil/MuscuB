@@ -1,8 +1,13 @@
 package com.example.muscu.activity;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -27,8 +32,9 @@ import java.util.ArrayList;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-public class SimpleScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler  {
+public class AddFoodActivity extends Activity {
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
     private Button save;
     private Spinner spinnerTypeAliment;
     private EditText editNom;
@@ -103,29 +109,23 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
     }
 
     public void scan(View view) {
-        fillFormWithDataFromBarCode();
-        //TODO ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 1);
-        zXingScannerView = new ZXingScannerView(getApplicationContext());
-        setContentView(zXingScannerView);
-        zXingScannerView.setResultHandler(this);
-        zXingScannerView.startCamera();
-    }
-
-    public void onPause() {
-        super.onPause();
-        if(zXingScannerView!=null){
-            zXingScannerView.stopCamera();
+        if (checkPermission()) {
+            Intent intent = new Intent(this, ScannerActivity.class);
+            startActivityForResult(intent,1);
+        } else {
+            requestPermission();
         }
     }
 
-    @Override
-    public void handleResult(Result result) {
-        zXingScannerView.stopCamera();
-        String resultText = result.getText();
-        Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, SimpleScannerActivity.class);
-        intent.putExtra("codeBarre", resultText);
-        startActivity(intent);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            String code = getIntent().getStringExtra("codeBarre");
+            if(code != null && !code.isEmpty()){
+                codeBarre=code;
+                fillFormWithDataFromBarCode();
+            }
+        }
     }
 
     public void fillFormWithDataFromBarCode(){
@@ -200,4 +200,48 @@ public class SimpleScannerActivity extends AppCompatActivity implements ZXingSca
         }
     }
 
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        return true;
+    }
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CODE);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(), "Permission accordée, vous pouvez scanner vos aliments", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Permission refusée, vous ne pouvez pas scanner vos aliments", Toast.LENGTH_SHORT).show();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                                /*showMessageOKCancel("Vous avez besoin ",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermission();
+                                            }
+                                        }
+                                    });*/
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    /*private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(AddFoodActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }*/
 }

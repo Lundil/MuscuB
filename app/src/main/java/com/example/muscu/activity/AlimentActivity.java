@@ -44,7 +44,7 @@ public class AlimentActivity extends AppCompatActivity {
     }
 
     private void openSaisieAliment(){
-        Intent intent = new Intent(this, SimpleScannerActivity.class);
+        Intent intent = new Intent(this, AddFoodActivity.class);
         startActivityForResult(intent,1);
     }
 
