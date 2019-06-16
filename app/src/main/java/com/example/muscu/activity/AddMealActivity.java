@@ -2,6 +2,7 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -9,12 +10,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.model.AlimentModel;
+import com.example.muscu.model.AlimentRepasModel;
 import com.example.muscu.model.RepasModel;
 
 import java.util.ArrayList;
@@ -22,7 +25,7 @@ import java.util.List;
 
 public class AddMealActivity extends Activity {
 
-    private Button save;
+    private Button save, delete;
     private EditText editNom;
     private EditText description;
     private CheckBox checkMatin;
@@ -30,6 +33,7 @@ public class AddMealActivity extends Activity {
     private CheckBox checkDiner;
     private ListView listView,listAlimentsSelected;
     private AlimentModel alimentSelected;
+    private RepasModel repasSelected;
     private List<AlimentModel> alimentModelList, alimentModelSelected = new ArrayList<>();
     private AlimentListAdapter alimentListAdapter,alimentSelectedListAdapter;
 
@@ -47,6 +51,7 @@ public class AddMealActivity extends Activity {
         checkMidi = findViewById(R.id.checkbox_midi);
         checkDiner = findViewById(R.id.checkbox_diner);
         save = findViewById(R.id.save);
+        delete = findViewById(R.id.delete);
         alimentModelList = AlimentModel.getAllAliments();
         if(alimentModelList!=null){
             alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
@@ -59,8 +64,6 @@ public class AddMealActivity extends Activity {
                 if(!isGUIFilled()){
                     Toast.makeText(getApplicationContext(), "Renseigner tous les champs", Toast.LENGTH_SHORT).show();
                 }else{
-                    RepasModel repasModel = new RepasModel();
-                    repasModel.setNom(editNom.getText().toString());
                     //Calcul
                     Double totalProteine = 0.0,totalLipide = 0.0,totalGlucide = 0.0;
                     for (AlimentModel alim: alimentModelSelected) {
@@ -68,14 +71,22 @@ public class AddMealActivity extends Activity {
                         totalLipide+=alim.getProteine();
                         totalGlucide+=alim.getProteine();
                     }
-                    repasModel.setProteineTotal(totalProteine);
-                    repasModel.setGlucideTotal(totalGlucide);
-                    repasModel.setLipideTotal(totalLipide);
-                    repasModel.setAlimentModels(alimentModelSelected);
-                    repasModel.setMatin(checkMatin.isChecked());
-                    repasModel.setMidi(checkMidi.isChecked());
-                    repasModel.setDiner(checkDiner.isChecked());
+                    RepasModel repasModel = new RepasModel(
+                            editNom.getText().toString(),
+                            description.getText().toString(),
+                            totalProteine,
+                            totalGlucide,
+                            totalLipide,
+                            checkMatin.isChecked(),
+                            checkMidi.isChecked(),
+                            checkDiner.isChecked(),
+                            false);
                     repasModel.save();
+                    //TODO
+                    AlimentRepasModel alimentRepasModel = new AlimentRepasModel();
+                    alimentRepasModel.alimentModel=alimentSelected.getId();
+                    alimentRepasModel.repasModel=repasModel.getId();
+                    alimentRepasModel.save();
                     finish();
                 }
 
@@ -99,6 +110,47 @@ public class AddMealActivity extends Activity {
                 alimentModelList.add(alimentSelected);
                 alimentModelSelected.remove(alimentSelected);
                 refreshLists();
+            }
+        });
+        Long idRepasModelSelected = (Long) getIntent().getLongExtra("idRepasModelSelected", 0L);
+        if(idRepasModelSelected != 0L){
+            repasSelected = RepasModel.getRepasById(idRepasModelSelected);
+            editNom.setText(repasSelected.nom);
+            description.setText(repasSelected.description);
+            checkMatin.setChecked(repasSelected.isMatin);
+            checkMidi.setChecked(repasSelected.isMidi);
+            checkDiner.setChecked(repasSelected.isDiner);
+
+            //TODO
+            List<AlimentRepasModel> alimentsRepasModel = AlimentRepasModel.getAlimentRepasModelByRepas(repasSelected.getId());
+
+            if(alimentsRepasModel!=null && !alimentsRepasModel.isEmpty()){
+                AlimentModel alimRecup = null;
+                for (AlimentRepasModel alimRepas: alimentsRepasModel) {
+                    alimRecup = AlimentModel.getAlimentById(alimRepas.alimentModel);
+                    if(alimRecup!=null){
+                        alimentModelSelected.add(alimRecup);
+                        alimentModelList.remove(alimRecup);
+                    }
+                }
+            }
+            /*alimentRepasModel.alimentModel=alimentSelected;
+            alimentRepasModel.repasModel=repasModel;
+            alimentRepasModel.save();
+            finish();*/
+
+            refreshLists();
+
+            delete.setVisibility(View.VISIBLE);
+        }else{
+            delete.setVisibility(View.GONE);
+        }
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                RepasModel repasModel = repasSelected;
+                repasModel.delete();
+                finish();
             }
         });
 

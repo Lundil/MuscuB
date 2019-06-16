@@ -20,6 +20,7 @@ import java.util.List;
 public class RepasActivity extends Activity {
 
     private FloatingActionButton addRepas;
+    private RepasModel repasModelSelected;
     private List<RepasModel> repasModelList;
     private ListView listView;
     private RepasListAdapter repasListAdapter;
@@ -32,7 +33,7 @@ public class RepasActivity extends Activity {
         addRepas = findViewById(R.id.addRepas);
         addRepas.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                openAddMeal();
+                openAddMeal(null);
             }
         });
         listView = findViewById(R.id.listRepas);
@@ -41,9 +42,20 @@ public class RepasActivity extends Activity {
             repasListAdapter = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, repasModelList);
             listView.setAdapter(repasListAdapter);
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+                view.setSelected(true);
+                repasModelSelected = repasListAdapter.getItem(position);
+                openAddMeal(repasModelSelected);
+            }
+        });
     }
-    private void openAddMeal(){
+    private void openAddMeal(RepasModel repasModelSelected){
         Intent intent = new Intent(this, AddMealActivity.class);
+        if(repasModelSelected != null){
+            intent.putExtra("idRepasModelSelected",repasModelSelected.getId());
+        }
         startActivityForResult(intent,1);
     }
 

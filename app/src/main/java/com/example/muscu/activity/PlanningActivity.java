@@ -9,12 +9,8 @@ import android.widget.Toast;
 
 import com.example.muscu.R;
 import com.example.muscu.adapter.JourListAdapter;
-import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.JourModel;
-import com.example.muscu.model.RepasModel;
-import com.example.muscu.model.UtilisateurModel;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class PlanningActivity extends Activity {
@@ -47,14 +43,14 @@ public class PlanningActivity extends Activity {
     private void createDiete(){
         Toast.makeText(getApplicationContext(), "Création d'une diète", Toast.LENGTH_SHORT).show();
         //Prendre 1 PDJ, 1 MIDI, 1 DINER, 1 collation que lipide, 1 collation que lipide, 1 collation que glucide
-        List<AlimentModel> listAlimentsEncas = AlimentModel.getAlimentsByIsEncas(true);
+        /*List<AlimentModel> listAlimentsEncas = AlimentModel.getAlimentsByIsEncas(true);
         RepasModel petitDejeuner = RepasModel.getRepasByIsMatin(true).get(0);
         List<RepasModel> listRepasMidi = RepasModel.getRepasByIsMidi(true);
         List<RepasModel> listRepasDiner =RepasModel.getRepasByIsDiner(true);
-        UtilisateurModel user = UtilisateurModel.getAllUtilisateurs().get(0);
+        UtilisateurModel user = UtilisateurModel.getAllUtilisateurs().get(0);*/
         //TODO user.getUserDailyNeeds();
         //Check
-        List<String> nomJourSemaine = Arrays.asList("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
+        /*List<String> nomJourSemaine = Arrays.asList("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
 
         Double dailyNeedsKcal = user.getUserDailyNeeds();
         Double dailyNeedsProteine = user.poids*2.0;
@@ -72,7 +68,7 @@ public class PlanningActivity extends Activity {
         dailyNeedsLipide=dailyNeedsLipide/Double.parseDouble(user.getNbRepas());
         dailyNeedsProteine=dailyNeedsProteine/Double.parseDouble(user.getNbRepas());
         dailyNeedsGlucide=dailyNeedsGlucide/Double.parseDouble(user.getNbRepas());
-        dailyNeedsGlucide=dailyNeedsGlucide;
+        dailyNeedsGlucide=dailyNeedsGlucide;*/
         /*for (String nomJour: nomJourSemaine) {
         //On a le nom, on prend le petit déjeuner
         JourModel jourModel = new JourModel();

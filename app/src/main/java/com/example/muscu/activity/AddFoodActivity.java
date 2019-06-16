@@ -110,7 +110,6 @@ public class AddFoodActivity extends Activity {
             editProteine.setText(alimentSelected.getProteine().toString());
             editLipide.setText(alimentSelected.getLipide().toString());
             editGlucide.setText(alimentSelected.getGlucide().toString());
-            //TODO
             if("Féculent".equalsIgnoreCase(alimentSelected.getTypeAliment())){
                 spinnerTypeAliment.setSelection(0);
             }else if("Laitage".equalsIgnoreCase(alimentSelected.getTypeAliment())){

@@ -30,7 +30,7 @@ public class RepasListAdapter extends ArrayAdapter<RepasModel> {
         String nom = getItem(position).nom;
 
         RepasModel repasModel = new RepasModel();
-        repasModel.setNom(nom);
+        repasModel.nom=nom;
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
