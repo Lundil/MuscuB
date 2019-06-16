@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.muscu.R;
@@ -19,6 +20,7 @@ public class AlimentActivity extends AppCompatActivity {
 
     private FloatingActionButton addAliment;
     private ListView listView;
+    private AlimentModel alimentSelected;
     private List<AlimentModel> alimentModelList;
     private AlimentListAdapter alimentListAdapter;
 
@@ -32,7 +34,7 @@ public class AlimentActivity extends AppCompatActivity {
         addAliment = findViewById(R.id.addAliment);
         addAliment.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                openSaisieAliment();
+                openSaisieAliment(null);
             }
         });
         listView = findViewById(R.id.listAliments);
@@ -41,10 +43,20 @@ public class AlimentActivity extends AppCompatActivity {
             alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
             listView.setAdapter(alimentListAdapter);
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+                view.setSelected(true);
+                alimentSelected = alimentListAdapter.getItem(position);
+                openSaisieAliment(alimentSelected);
+            }
+        });
     }
 
-    private void openSaisieAliment(){
+    private void openSaisieAliment(AlimentModel alimentSelected){
         Intent intent = new Intent(this, AddFoodActivity.class);
+        if(alimentSelected != null){
+            intent.putExtra("idAlimentSelected",alimentSelected.getId());
+        }
         startActivityForResult(intent,1);
     }
 

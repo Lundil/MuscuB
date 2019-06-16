@@ -1,18 +1,18 @@
 package com.example.muscu.model;
 
+import android.arch.persistence.room.PrimaryKey;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.query.Select;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class UtilisateurModel extends Model {
+public class UtilisateurModel extends Model implements Serializable {
 
-    //Attributes
-    @Column(name = "_id")
-    public Long id;
     @Column(name = "age")
     public Integer age;
     @Column(name = "sexe")

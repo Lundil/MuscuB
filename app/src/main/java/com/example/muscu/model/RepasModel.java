@@ -1,17 +1,18 @@
 package com.example.muscu.model;
 
+import android.arch.persistence.room.PrimaryKey;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Table(name="Repas")
-public class RepasModel extends Model {
+public class RepasModel extends Model implements Serializable {
 
-    @Column(name = "_id")
-    public Long id;
     @Column(name = "nom")
     public String nom;
     @Column(name = "description")

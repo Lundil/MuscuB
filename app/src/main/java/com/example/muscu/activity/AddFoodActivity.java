@@ -11,16 +11,17 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.muscu.R;
 import com.example.muscu.model.AlimentModel;
-import com.google.zxing.Result;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -35,7 +36,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 public class AddFoodActivity extends Activity {
 
     private static final int PERMISSION_REQUEST_CODE = 200;
-    private Button save;
+    private Button save, delete;
     private Spinner spinnerTypeAliment;
     private EditText editNom;
     private EditText editProteine;
@@ -45,14 +46,15 @@ public class AddFoodActivity extends Activity {
     private CheckBox checkMidi;
     private CheckBox checkDiner;
     private CheckBox checkEncas;
-    private ZXingScannerView zXingScannerView;
+    private AlimentModel alimentSelected;
+    private Long idAlimentSelected = 0L;
     private String protein="",glucide="",lipide="",nom="", imageUrl="", codeBarre="";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_scan);
+        setContentView(R.layout.activity_add_food);
         setTitle("Nouvel aliment");
 
         editNom = findViewById(R.id.editNom);
@@ -70,14 +72,22 @@ public class AddFoodActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinnerTypeAliment.setAdapter(adapter);
+
         save = findViewById(R.id.save);
+        delete = findViewById(R.id.delete);
+
 
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 if(!isGUIFilled()){
                     Toast.makeText(getApplicationContext(), "Renseigner tous les champs", Toast.LENGTH_SHORT).show();
                 }else{
-                    AlimentModel alimentModel = new AlimentModel();
+                    AlimentModel alimentModel;
+                    if(alimentSelected!=null){
+                        alimentModel = alimentSelected;
+                    }else{
+                        alimentModel = new AlimentModel();
+                    }
                     alimentModel.setNom(editNom.getText().toString());
                     alimentModel.setProteine(Double.parseDouble(editProteine.getText().toString()));
                     alimentModel.setGlucide(Double.parseDouble(editGlucide.getText().toString()));
@@ -91,6 +101,47 @@ public class AddFoodActivity extends Activity {
                     finish();
                 }
 
+            }
+        });
+        Long idAlimentSelected = (Long) getIntent().getLongExtra("idAlimentSelected", 0L);
+        if(idAlimentSelected != 0L){
+            alimentSelected = AlimentModel.getAlimentById(idAlimentSelected);
+            editNom.setText(alimentSelected.getNom());
+            editProteine.setText(alimentSelected.getProteine().toString());
+            editLipide.setText(alimentSelected.getLipide().toString());
+            editGlucide.setText(alimentSelected.getGlucide().toString());
+            //TODO
+            if("Féculent".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(0);
+            }else if("Laitage".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(1);
+            }else if("Légume".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(2);
+            }else if("Poisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(3);
+            }else if("Boisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(4);
+            }else if("Sauce".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(5);
+            }else if("Viande".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(6);
+            }else if("Fruit".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(7);
+            }
+            checkMatin.setChecked(alimentSelected.isMatin);
+            checkMidi.setChecked(alimentSelected.isMidi);
+            checkDiner.setChecked(alimentSelected.isDiner);
+            checkEncas.setChecked(alimentSelected.isEncas);
+            delete.setVisibility(View.VISIBLE);
+        }else{
+            delete.setVisibility(View.GONE);
+        }
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AlimentModel alimentModel = alimentSelected;
+                alimentModel.delete();
+                finish();
             }
         });
 

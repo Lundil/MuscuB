@@ -1,17 +1,18 @@
 package com.example.muscu.model;
 
+import android.arch.persistence.room.PrimaryKey;
+
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Table(name="Aliments")
-public class AlimentModel extends Model {
+public class AlimentModel extends Model implements Serializable {
 
-    @Column(name = "_id")
-    public Long id;
     @Column(name = "nom")
     public String nom;
     @Column(name = "isMatin")
@@ -33,6 +34,10 @@ public class AlimentModel extends Model {
 
     public AlimentModel(){
 
+    }
+
+    public static AlimentModel getAlimentById(Long id){
+        return new Select().from(AlimentModel.class).where("id = ?", id).executeSingle();
     }
 
     public static List<AlimentModel> getAllAliments(){

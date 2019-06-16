@@ -18,7 +18,6 @@ import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.RepasModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class AddMealActivity extends Activity {
