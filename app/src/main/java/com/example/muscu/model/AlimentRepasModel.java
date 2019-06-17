@@ -3,6 +3,7 @@ package com.example.muscu.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
 import java.util.List;
@@ -19,6 +20,14 @@ public class AlimentRepasModel extends Model {
 
     public static List<AlimentRepasModel> getAlimentRepasModelByRepas(Long id){
         return new Select().from(AlimentRepasModel.class).where("repas = ?", id).execute();
+    }
+
+    public static AlimentRepasModel getAlimentRepasModelByIdAlimentIdRepas(Long idAliment, Long idRepas){
+        return new Select().from(AlimentRepasModel.class).where("aliment = ?", idAliment).and("repas = ?", idRepas).executeSingle();
+    }
+
+    public static void deleteAlimentFromAlimentRepasModelByIdRepas(Long idRepas){
+        new Delete().from(AlimentRepasModel.class).where("repas = ?", idRepas).execute();
     }
 
     public List<AlimentModel> listAlimentModels(Long id) {

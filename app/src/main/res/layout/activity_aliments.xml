@@ -6,22 +6,58 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".activity.MainActivity">
 
-<TextView
-    android:id="@+id/textViewTitreNutrition"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="100dp"
-    android:text="Gérer vos aliments"
-    android:fontFamily="@font/comfortaa"
-    android:textSize="30sp" />
-<ListView
-    android:id="@+id/listAliments"
-    android:layout_width="200dp"
-    android:layout_height="300dp"
-    android:layout_marginTop="50dp"
-    android:layout_centerHorizontal="true"
-    android:layout_below="@+id/textViewTitreNutrition"/>
+    <TextView
+        android:id="@+id/textViewTitreNutrition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="Gérer vos aliments"
+        android:fontFamily="@font/comfortaa"
+        android:textSize="30sp" />
+
+    <CheckBox android:id="@+id/checkbox_matin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewTitreNutrition"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:checked="true"
+        android:text="Matin"/>
+
+    <CheckBox android:id="@+id/checkbox_midi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_matin"
+        android:layout_below="@+id/textViewTitreNutrition"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Midi"/>
+
+    <CheckBox android:id="@+id/checkbox_diner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_midi"
+        android:layout_below="@+id/textViewTitreNutrition"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Diner"/>
+
+    <CheckBox android:id="@+id/checkbox_encas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_diner"
+        android:layout_below="@+id/textViewTitreNutrition"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Encas"/>
+    <ListView
+        android:id="@+id/listAliments"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/checkbox_encas"/>
 
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

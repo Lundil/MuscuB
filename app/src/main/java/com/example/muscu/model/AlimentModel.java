@@ -44,6 +44,10 @@ public class AlimentModel extends Model implements Serializable {
         return new Select().from(AlimentModel.class).orderBy("nom").execute();
     }
 
+    public static List<AlimentModel> getAlimentsByMoment(boolean matin,boolean midi,boolean diner,boolean encas){
+        return new Select().from(AlimentModel.class).where("isMatin = ?", matin).and("isMidi = ?", midi).and("isDiner = ?", diner).and("isEncas = ?", encas).orderBy("nom").execute();
+    }
+
     public static List<AlimentModel> getAlimentsByType(String type){
         return new Select().from(AlimentModel.class).where("typeAliment = ?", type).orderBy("nom").execute();
     }
@@ -62,13 +66,6 @@ public class AlimentModel extends Model implements Serializable {
 
     public static List<AlimentModel> getAlimentsByIsEncas(Boolean isEncas){
         return new Select().from(AlimentModel.class).where("isEncas = ?", isEncas).orderBy("nom").execute();
-    }
-
-    public static void deleteAllAliments(){
-        List<AlimentModel> a = getAllAliments();
-        for (AlimentModel az: a) {
-            az.delete();
-        }
     }
 
     public String getNom() {

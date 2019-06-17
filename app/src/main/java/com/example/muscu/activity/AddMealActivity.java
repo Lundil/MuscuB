@@ -71,22 +71,40 @@ public class AddMealActivity extends Activity {
                         totalLipide+=alim.getProteine();
                         totalGlucide+=alim.getProteine();
                     }
-                    RepasModel repasModel = new RepasModel(
-                            editNom.getText().toString(),
-                            description.getText().toString(),
-                            totalProteine,
-                            totalGlucide,
-                            totalLipide,
-                            checkMatin.isChecked(),
-                            checkMidi.isChecked(),
-                            checkDiner.isChecked(),
-                            false);
+                    RepasModel repasModel = null;
+                    if(repasSelected != null){
+                        repasModel=repasSelected;
+                        repasModel.nom=editNom.getText().toString();
+                        repasModel.description=description.getText().toString();
+                        repasModel.isMatin=checkMatin.isChecked();
+                        repasModel.isMidi=checkMidi.isChecked();
+                        repasModel.isDiner=checkDiner.isChecked();
+                        repasModel.proteineTotal=totalProteine;
+                        repasModel.lipideTotal=totalLipide;
+                        repasModel.glucideTotal=totalGlucide;
+                    }else{
+                        repasModel = new RepasModel(
+                                editNom.getText().toString(),
+                                description.getText().toString(),
+                                totalProteine,
+                                totalGlucide,
+                                totalLipide,
+                                checkMatin.isChecked(),
+                                checkMidi.isChecked(),
+                                checkDiner.isChecked(),
+                                false);
+                    }
                     repasModel.save();
                     //TODO
-                    AlimentRepasModel alimentRepasModel = new AlimentRepasModel();
-                    alimentRepasModel.alimentModel=alimentSelected.getId();
-                    alimentRepasModel.repasModel=repasModel.getId();
-                    alimentRepasModel.save();
+                    if(repasSelected != null){
+                        AlimentRepasModel.deleteAlimentFromAlimentRepasModelByIdRepas(repasSelected.getId());
+                    }
+                    for (AlimentModel selected: alimentModelSelected) {
+                        AlimentRepasModel alimentRepasModel = new AlimentRepasModel();
+                        alimentRepasModel.alimentModel=selected.getId();
+                        alimentRepasModel.repasModel=repasModel.getId();
+                        alimentRepasModel.save();
+                    }
                     finish();
                 }
 
@@ -148,6 +166,7 @@ public class AddMealActivity extends Activity {
 
         delete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                AlimentRepasModel.deleteAlimentFromAlimentRepasModelByIdRepas(repasSelected.getId());
                 RepasModel repasModel = repasSelected;
                 repasModel.delete();
                 finish();

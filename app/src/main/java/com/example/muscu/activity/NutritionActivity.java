@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.muscu.R;
-import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.RepasModel;
 
@@ -102,7 +101,7 @@ public class NutritionActivity extends AppCompatActivity {
         startActivityForResult(intent,2);
     }
     public void openAliments() {
-        Intent intent = new Intent(this, AlimentActivity.class);
+        Intent intent = new Intent(this, AlimentsActivity.class);
         startActivityForResult(intent,1);
     }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
