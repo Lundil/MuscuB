@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <TextView
+        android:id="@+id/textViewTitre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Quels repas constitueront votre semaine ?"
+        android:fontFamily="@font/comfortaa"
+        android:textSize="18sp" />
+
+    <TextView
+    android:id="@+id/textViewPdjDisponibles"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:text="Petit(s) déjeuner(s) disponible(s) : "
+    android:layout_below="@+id/textViewTitre"/>
+
+    <ListView
+        android:id="@+id/listPdjDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewPdjDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+    <TextView
+        android:id="@+id/textViewPdjSelected"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Petit(s) déjeuner(s) sélectionné(s) : "
+        android:layout_toRightOf="@+id/textViewPdjDisponibles"
+        android:layout_below="@+id/textViewTitre"/>
+
+    <ListView
+        android:id="@+id/listPdjSelected"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewPdjSelected"
+        android:layout_toRightOf="@+id/textViewPdjDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+
+    <TextView
+        android:id="@+id/textViewMidiDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Déjeuner(s) disponible(s) : "
+        android:layout_below="@+id/listPdjSelected"/>
+
+    <ListView
+        android:id="@+id/listMidiDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewMidiDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+    <TextView
+        android:id="@+id/textViewMidiSelected"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Déjeuner(s) sélectionné(s) : "
+        android:layout_toRightOf="@+id/textViewMidiDisponibles"
+        android:layout_below="@+id/listPdjSelected"/>
+
+    <ListView
+        android:id="@+id/listMidiSelected"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewMidiSelected"
+        android:layout_toRightOf="@+id/textViewMidiDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+
+    <TextView
+        android:id="@+id/textViewDinerDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Diner(s) disponible(s) : "
+        android:layout_below="@+id/listMidiSelected"/>
+
+    <ListView
+        android:id="@+id/listDinerDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewDinerDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+    <TextView
+        android:id="@+id/textViewDinerSelected"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Diner(s) sélectionné(s) : "
+        android:layout_toRightOf="@+id/textViewMidiDisponibles"
+        android:layout_below="@+id/listMidiSelected"/>
+
+    <ListView
+        android:id="@+id/listDinerSelected"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewDinerSelected"
+        android:layout_toRightOf="@+id/textViewMidiDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+
+    <TextView
+        android:id="@+id/textViewEncasDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Diner(s) disponible(s) : "
+        android:layout_below="@+id/listDinerSelected"/>
+
+    <ListView
+        android:id="@+id/listEncasDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewEncasDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+    <TextView
+        android:id="@+id/textViewEncasSelected"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="Diner(s) sélectionné(s) : "
+        android:layout_toRightOf="@+id/textViewEncasDisponibles"
+        android:layout_below="@+id/listDinerSelected"/>
+
+    <ListView
+        android:id="@+id/listEncasSelected"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_below="@+id/textViewEncasSelected"
+        android:layout_toRightOf="@+id/textViewMidiDisponibles"
+        android:background="@drawable/txt_view_bg"/>
+
+    <Button
+        android:id="@+id/createDiete"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listEncasSelected"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:background="#e51057"
+        android:textColor="#FFFFFF"
+        android:text="Générer votre diète" />
+
+
+</RelativeLayout>

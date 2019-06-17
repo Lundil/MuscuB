@@ -1,6 +1,7 @@
 package com.example.muscu.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,17 +33,22 @@ public class PlanningActivity extends Activity {
         setTitle("Planning");
 
         if(JourModel.getAllJours().isEmpty()){
-            createDiete();
+            openCreateDiete();
         }
 
         //listJour
-        listView = findViewById(R.id.listJour);
+        /*listView = findViewById(R.id.listJour);
         jourModelList = JourModel.getAllJours();
         if (jourModelList != null) {
             jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_aliment_layout, jourModelList);
             listView.setAdapter(jourListAdapter);
-        }
+        }*/
 
+    }
+
+    public void openCreateDiete() {
+        Intent intent = new Intent(this, AddDieteActivity.class);
+        startActivityForResult(intent,1);
     }
 
     private void createDiete(){
@@ -52,7 +58,7 @@ public class PlanningActivity extends Activity {
         RepasModel petitDejeuner = RepasModel.getRepasByIsMatin(true).get(0);
         List<RepasModel> listRepasMidi = RepasModel.getRepasByIsMidi(true);
         List<RepasModel> listRepasDiner =RepasModel.getRepasByIsDiner(true);
-        UtilisateurModel user = UtilisateurModel.getAllUtilisateurs().get(0);
+        UtilisateurModel user = UtilisateurModel.getAllUtilisateurs();
         //TODO user.getUserDailyNeeds();
         //Check
         List<String> nomJourSemaine = Arrays.asList("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
@@ -73,11 +79,37 @@ public class PlanningActivity extends Activity {
             dailyNeedsGlucide = dailyNeedsGlucide-ingredient.getGlucide();
         }
 
-        dailyNeedsProteine=dailyNeedsProteine/Double.parseDouble(user.getNbRepas());
         dailyNeedsLipide=dailyNeedsLipide/Double.parseDouble(user.getNbRepas());
         dailyNeedsProteine=dailyNeedsProteine/Double.parseDouble(user.getNbRepas());
         dailyNeedsGlucide=dailyNeedsGlucide/Double.parseDouble(user.getNbRepas());
         dailyNeedsGlucide=dailyNeedsGlucide;
+
+        //TODO Création midi
+
+        for (RepasModel midi : listRepasMidi) {
+            /*if("Féculent".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(0);
+            }else if("Laitage".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(1);
+            }else if("Légume".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(2);
+            }else if("Poisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(3);
+            }else if("Boisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(4);
+            }else if("Sauce".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(5);
+            }else if("Viande".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(6);
+            }else if("Fruit".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(7);
+            }*/
+        }
+        //TODO Création diner
+        for (RepasModel diner : listRepasMidi) {
+
+        }
+
         /*for (String nomJour: nomJourSemaine) {
         //On a le nom, on prend le petit déjeuner
         JourModel jourModel = new JourModel();

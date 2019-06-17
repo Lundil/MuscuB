@@ -74,8 +74,8 @@ public class UtilisateurModel extends Model implements Serializable {
     }
 
     //Queries
-    public static List<UtilisateurModel> getAllUtilisateurs(){
-        return new Select().from(UtilisateurModel.class).execute();
+    public static UtilisateurModel getAllUtilisateurs(){
+        return new Select().from(UtilisateurModel.class).executeSingle();
     }
 
     //Getters & Setters

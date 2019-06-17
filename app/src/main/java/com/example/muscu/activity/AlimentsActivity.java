@@ -102,7 +102,7 @@ public class AlimentsActivity extends AppCompatActivity {
     private void openSaisieAliment(AlimentModel alimentSelected){
         Intent intent = new Intent(this, AddFoodActivity.class);
         if(alimentSelected!=null){
-            intent.putExtra("alimentSelected", alimentSelected);
+            intent.putExtra("idAlimentSelected", alimentSelected.getId());
         }
         startActivityForResult(intent,1);
     }

@@ -34,8 +34,8 @@ public class AccueilActivity extends Activity {
         });
 
         button = findViewById(R.id.buttonNutrition);
-        List<UtilisateurModel> list = UtilisateurModel.getAllUtilisateurs();
-        isUserCreated = list != null && !list.isEmpty();
+        UtilisateurModel list = UtilisateurModel.getAllUtilisateurs();
+        isUserCreated = list != null;
         if(!isUserCreated){
             button.setBackgroundColor(Color.GRAY);
         }else{
@@ -78,8 +78,8 @@ public class AccueilActivity extends Activity {
 
         if (requestCode == 1) {
             button = findViewById(R.id.buttonNutrition);
-            List<UtilisateurModel> list = UtilisateurModel.getAllUtilisateurs();
-            isUserCreated = list != null && !list.isEmpty();
+            UtilisateurModel list = UtilisateurModel.getAllUtilisateurs();
+            isUserCreated = list != null;
             if(!isUserCreated){
                 button.setBackgroundColor(Color.GRAY);
             }else{

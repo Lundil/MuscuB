@@ -69,9 +69,8 @@ public class InfosActivity extends AppCompatActivity {
         spinnerNbRepas.setAdapter(adapter);
 
         //Chargement de l'utilisateur
-        users = UtilisateurModel.getAllUtilisateurs();
-        if(users.size()!=0){
-            user = users.get(0);
+        if(UtilisateurModel.getAllUtilisateurs()!=null){
+            user = UtilisateurModel.getAllUtilisateurs();
         }
 
         toggleButtonMan.setOnClickListener(new View.OnClickListener() {
