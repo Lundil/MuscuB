@@ -15,7 +15,7 @@ import java.util.List;
 
 public class JourListAdapter extends ArrayAdapter<JourModel> {
 
-    private static final String TAG = "RepasListAdapter";
+    private static final String TAG = "JourListAdapter";
 
     private Context mContext;
     int mResource;
@@ -28,18 +28,27 @@ public class JourListAdapter extends ArrayAdapter<JourModel> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         String nom = getItem(position).nom;
-        List<RepasModel> listRepas = getItem(position).collations;
+        RepasModel matin = getItem(position).repasMatin;
+        RepasModel midi = getItem(position).repasMidi;
+        RepasModel soir = getItem(position).repasDiner;
 
         JourModel jourModel = new JourModel();
-        jourModel.setNom(nom);
-        jourModel.setCollations(listRepas);
+        jourModel.setRepasMatin(matin);
+        jourModel.setRepasMidi(midi);
+        jourModel.setRepasDiner(soir);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         convertView = inflater.inflate(mResource, parent, false);
 
         TextView tvNom = (TextView) convertView.findViewById(R.id.textView_name);
+        TextView tvMatin = (TextView) convertView.findViewById(R.id.textView_matin);
+        TextView tvMidi = (TextView) convertView.findViewById(R.id.textView_midi);
+        TextView tvSoir = (TextView) convertView.findViewById(R.id.textView_soir);
 
         tvNom.setText(nom);
+        tvMatin.setText(jourModel.getRepasMatin().nom);
+        tvMidi.setText(jourModel.getRepasMidi().nom);
+        tvSoir.setText(jourModel.getRepasDiner().nom);
 
         return convertView;
     }

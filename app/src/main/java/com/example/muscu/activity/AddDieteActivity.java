@@ -14,11 +14,14 @@ import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
+import com.example.muscu.model.JourModel;
 import com.example.muscu.model.RepasModel;
 import com.example.muscu.model.UtilisateurModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class AddDieteActivity extends Activity {
 
@@ -30,6 +33,7 @@ public class AddDieteActivity extends Activity {
     private RepasListAdapter repasListAdapterPdjDispo,repasListAdapterMidiDispo,repasListAdapterDinerDispo,repasListAdapterPdjSelected,repasListAdapterMidiSelected,repasListAdapterDinerSelected;
     private AlimentModel alimentSelected;
     private Button createDiete;
+    private UtilisateurModel user;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,7 @@ public class AddDieteActivity extends Activity {
         listPdjDispos = RepasModel.getRepasByIsMatin(true);
         listDejDispos = RepasModel.getRepasByIsMidi(true);
         listDinerDispos =RepasModel.getRepasByIsDiner(true);
-        UtilisateurModel user = UtilisateurModel.getAllUtilisateurs();
+        user = UtilisateurModel.getAllUtilisateurs();
 
         refreshLists();
 
@@ -145,6 +149,7 @@ public class AddDieteActivity extends Activity {
         createDiete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(isGUIFilled()){
+                    creerDiete();
                     Toast.makeText(getApplicationContext(), "Création de votre diète", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getApplicationContext(), "Renseignez tout les champs avant de préparer votre diète", Toast.LENGTH_SHORT).show();
@@ -176,6 +181,39 @@ public class AddDieteActivity extends Activity {
 
     private boolean isGUIFilled(){
         return !listEncasSelected.isEmpty() && !listPdjSelected.isEmpty() && !listDejSelected.isEmpty() && !listDinerSelected.isEmpty() ;
+    }
+
+    private void creerDiete(){
+        List<String> nomJourSemaine = Arrays.asList("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
+        List<RepasModel> pDJs = listPdjSelected, dejeuners = listDejSelected, diners = listDinerSelected;
+        Random ran = new Random();
+        boolean collations = Integer.parseInt(user.nbRepas) > 3;
+        for (String day : nomJourSemaine) {
+            //TODO
+            JourModel jour = new JourModel();
+            if(pDJs.isEmpty()){
+                pDJs = listPdjSelected;
+            }
+            if(dejeuners.isEmpty()){
+                dejeuners = listDejSelected;
+            }
+            if(diners.isEmpty()){
+                diners = listDinerSelected;
+            }
+            jour.nom=day;
+            jour.repasMatin=pDJs.get(0);
+            //pDJs.remove(jour.repasMatin);
+            jour.repasMidi=dejeuners.get(0);
+            //dejeuners.remove(jour.repasMidi);
+            jour.repasDiner=diners.get(0);
+            //diners.remove(jour.repasDiner);
+            /*if(collations){
+                for(int i =0; i < Integer.parseInt(user.nbRepas)-3 ;i++){
+                    jour.collations=new ArrayList<>();
+                }
+            }*/
+            jour.save();
+        }
     }
 
 }

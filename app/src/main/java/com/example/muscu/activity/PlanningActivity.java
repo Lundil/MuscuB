@@ -35,14 +35,20 @@ public class PlanningActivity extends Activity {
         if(JourModel.getAllJours().isEmpty()){
             openCreateDiete();
         }
+        /*else{
+            List<JourModel> list = JourModel.getAllJours();
+            for (JourModel jour : list) {
+                jour.delete();
+            }
+        }*/
 
         //listJour
-        /*listView = findViewById(R.id.listJour);
+        listView = findViewById(R.id.listJour);
         jourModelList = JourModel.getAllJours();
         if (jourModelList != null) {
-            jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_aliment_layout, jourModelList);
+            jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_jour_layout, jourModelList);
             listView.setAdapter(jourListAdapter);
-        }*/
+        }
 
     }
 

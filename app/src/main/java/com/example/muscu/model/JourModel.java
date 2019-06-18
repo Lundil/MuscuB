@@ -21,8 +21,6 @@ public class JourModel extends Model implements Serializable {
     public RepasModel repasMidi;
     @Column(name = "repasDiner")
     public RepasModel repasDiner;
-    @Column(name = "collations")
-    public List<RepasModel> collations;
 
     public JourModel() {
     }
@@ -63,11 +61,4 @@ public class JourModel extends Model implements Serializable {
         this.repasDiner = repasDiner;
     }
 
-    public List<RepasModel> getCollations() {
-        return collations;
-    }
-
-    public void setCollations(List<RepasModel> collations) {
-        this.collations = collations;
-    }
 }
