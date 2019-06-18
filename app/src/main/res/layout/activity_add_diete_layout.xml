@@ -16,12 +16,12 @@
         android:textSize="18sp" />
 
     <TextView
-    android:id="@+id/textViewPdjDisponibles"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:text="Petit(s) déjeuner(s) disponible(s) : "
-    android:layout_below="@+id/textViewTitre"/>
+        android:id="@+id/textViewPdjDisponibles"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Petit(s) déjeuner(s) disponible(s) : "
+        android:layout_below="@+id/textViewTitre"/>
 
     <ListView
         android:id="@+id/listPdjDisponibles"
