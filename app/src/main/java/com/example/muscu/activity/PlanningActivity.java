@@ -2,10 +2,15 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.muscu.R;
@@ -24,6 +29,9 @@ public class PlanningActivity extends Activity {
     private List<JourModel> jourModelList;
     private ListView listView;
     private JourListAdapter jourListAdapter;
+    private JourModel jourSelected;
+    private Button buttonCreateDiete;
+    private TextView textViewErreur;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,10 +39,22 @@ public class PlanningActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_planning);
         setTitle("Planning");
-
+        textViewErreur = findViewById(R.id.textView_erreur);
+        buttonCreateDiete = findViewById(R.id.buttonCreateDiete);
+        buttonCreateDiete.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openCreateDiete();
+            }
+        });
         if(JourModel.getAllJours().isEmpty()){
-            openCreateDiete();
+            buttonCreateDiete.setText("Créér votre diète");
+            String erreur = getIntent().getStringExtra("erreur");
+            if(erreur != null && erreur.isEmpty()){
+                textViewErreur.setText(erreur);
+            }
         }
+
+
         /*else{
             List<JourModel> list = JourModel.getAllJours();
             for (JourModel jour : list) {
@@ -49,7 +69,21 @@ public class PlanningActivity extends Activity {
             jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_jour_layout, jourModelList);
             listView.setAdapter(jourListAdapter);
         }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
+                view.setSelected(true);
+                jourSelected = jourListAdapter.getItem(position);
+                openDetailJour();
+            }
+        });
 
+    }
+
+    public void openDetailJour(){
+        Intent intent = new Intent(this, JourActivity.class);
+        intent.putExtra("idJourModelSelected", jourSelected.getId());
+        startActivityForResult(intent,1);
     }
 
     public void openCreateDiete() {
@@ -128,5 +162,24 @@ public class PlanningActivity extends Activity {
 
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 1) {
+            //TODO Refresh
+            //listJour
+            String erreur = data.getStringExtra("erreur");
+            if(erreur != null && !erreur.isEmpty()){
+                textViewErreur.setText(erreur);
+            }else{
+                listView = findViewById(R.id.listJour);
+                jourModelList = JourModel.getAllJours();
+                if (jourModelList != null && !jourModelList.isEmpty()) {
+                    jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_jour_layout, jourModelList);
+                    listView.setAdapter(jourListAdapter);
+                    buttonCreateDiete.setText("Changer de diète");
+                }
+            }
+        }
+    }
 
 }

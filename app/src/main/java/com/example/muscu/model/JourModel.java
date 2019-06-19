@@ -1,7 +1,5 @@
 package com.example.muscu.model;
 
-import android.arch.persistence.room.PrimaryKey;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -15,6 +13,8 @@ public class JourModel extends Model implements Serializable {
 
     @Column(name = "nom")
     public String nom;
+    @Column(name = "ordre")
+    public Integer ordre;
     @Column(name = "repasMatin")
     public RepasModel repasMatin;
     @Column(name = "repasMidi")
@@ -25,8 +25,12 @@ public class JourModel extends Model implements Serializable {
     public JourModel() {
     }
 
+    public static JourModel getJourById(Long id){
+        return new Select().from(JourModel.class).where("id = ?", id).executeSingle();
+    }
+
     public static List<JourModel> getAllJours(){
-        return new Select().from(JourModel.class).orderBy("nom").execute();
+        return new Select().from(JourModel.class).orderBy("ordre").execute();
     }
 
     public String getNom() {
@@ -35,6 +39,14 @@ public class JourModel extends Model implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Integer getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(Integer ordre) {
+        this.ordre = ordre;
     }
 
     public RepasModel getRepasMatin() {

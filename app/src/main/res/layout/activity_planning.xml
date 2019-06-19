@@ -10,17 +10,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:text="Gérer votre semaine"
         android:fontFamily="@font/comfortaa"
         android:textSize="30sp" />
     <ListView
         android:id="@+id/listJour"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textViewTitreSemaine"/>
+    <Button
+        android:id="@+id/buttonCreateDiete"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listJour"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="#2372db"
+        android:textColor="#FFFFFF"
+        android:text="Changer de diète"
+        android:fontFamily="@font/comfortaa"/>
+
+    <TextView
+        android:id="@+id/textView_erreur"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonCreateDiete"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/comfortaa"
+        android:textSize="20sp" />
 
 
 </RelativeLayout>

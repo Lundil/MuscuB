@@ -28,6 +28,7 @@
         <activity android:name=".activity.PlanningActivity"></activity>
         <activity android:name=".activity.AddDieteActivity"></activity>
         <activity android:name=".activity.AddFoodActivity"></activity>
+        <activity android:name=".activity.JourActivity"></activity>
 
         <activity android:name=".activity.NutritionActivity"></activity>
         <activity android:name=".activity.RepasActivity"></activity>
@@ -35,7 +36,7 @@
 
 
         <meta-data android:name="AA_DB_NAME" android:value="MuscleBuildingDatabase5" /> <!-- DB  name -->
-        <meta-data android:name="AA_DB_VERSION" android:value="4" /> <!-- DB Version -->
+        <meta-data android:name="AA_DB_VERSION" android:value="5" /> <!-- DB Version -->
 
         <!-- DataModel path  with package name -->
         <meta-data android:name="AA_MODELS"

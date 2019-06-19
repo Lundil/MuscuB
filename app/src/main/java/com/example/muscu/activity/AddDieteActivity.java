@@ -1,6 +1,7 @@
 package com.example.muscu.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ public class AddDieteActivity extends Activity {
     private RepasListAdapter repasListAdapterPdjDispo,repasListAdapterMidiDispo,repasListAdapterDinerDispo,repasListAdapterPdjSelected,repasListAdapterMidiSelected,repasListAdapterDinerSelected;
     private AlimentModel alimentSelected;
     private Button createDiete;
+    private String erreur = "";
     private UtilisateurModel user;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +190,13 @@ public class AddDieteActivity extends Activity {
         List<RepasModel> pDJs = listPdjSelected, dejeuners = listDejSelected, diners = listDinerSelected;
         Random ran = new Random();
         boolean collations = Integer.parseInt(user.nbRepas) > 3;
+        int ordre = 0;
+        List<JourModel> list = JourModel.getAllJours();
+        for (JourModel jour : list) {
+            jour.delete();
+        }
         for (String day : nomJourSemaine) {
+            ordre++;
             //TODO
             JourModel jour = new JourModel();
             if(pDJs.isEmpty()){
@@ -200,6 +208,7 @@ public class AddDieteActivity extends Activity {
             if(diners.isEmpty()){
                 diners = listDinerSelected;
             }
+            jour.ordre=ordre;
             jour.nom=day;
             jour.repasMatin=pDJs.get(0);
             //pDJs.remove(jour.repasMatin);
@@ -214,6 +223,18 @@ public class AddDieteActivity extends Activity {
             }*/
             jour.save();
         }
+        erreur+="Ici figureront les conseils pour bien préparer votre diète";
+        if(!erreur.isEmpty()){
+            Intent intent = new Intent();
+            intent.putExtra("erreur", erreur);
+            setResult(Activity.RESULT_OK, intent);
+            list = JourModel.getAllJours();
+            for (JourModel jour : list) {
+                jour.delete();
+            }
+        }
+        finish();
+
     }
 
 }
