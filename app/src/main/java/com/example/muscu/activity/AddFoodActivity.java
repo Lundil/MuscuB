@@ -110,22 +110,26 @@ public class AddFoodActivity extends Activity {
             editProteine.setText(alimentSelected.getProteine().toString());
             editLipide.setText(alimentSelected.getLipide().toString());
             editGlucide.setText(alimentSelected.getGlucide().toString());
-            if("Féculent".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+            if("Boisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
                 spinnerTypeAliment.setSelection(0);
-            }else if("Laitage".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+            }else if("Céréales".equalsIgnoreCase(alimentSelected.getTypeAliment())){
                 spinnerTypeAliment.setSelection(1);
-            }else if("Légume".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+            }else if("Féculent".equalsIgnoreCase(alimentSelected.getTypeAliment())){
                 spinnerTypeAliment.setSelection(2);
-            }else if("Poisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
-                spinnerTypeAliment.setSelection(3);
-            }else if("Boisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
-                spinnerTypeAliment.setSelection(4);
-            }else if("Sauce".equalsIgnoreCase(alimentSelected.getTypeAliment())){
-                spinnerTypeAliment.setSelection(5);
-            }else if("Viande".equalsIgnoreCase(alimentSelected.getTypeAliment())){
-                spinnerTypeAliment.setSelection(6);
             }else if("Fruit".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(3);
+            }else if("Produit laitier".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(4);
+            }else if("Légume".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(5);
+            }else if("Poisson".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(6);
+            }else if("Poudre".equalsIgnoreCase(alimentSelected.getTypeAliment())){
                 spinnerTypeAliment.setSelection(7);
+            }else if("Sauce".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(8);
+            }else if("Viande".equalsIgnoreCase(alimentSelected.getTypeAliment())){
+                spinnerTypeAliment.setSelection(9);
             }
             checkMatin.setChecked(alimentSelected.isMatin);
             checkMidi.setChecked(alimentSelected.isMidi);

@@ -167,7 +167,10 @@ public class PlanningActivity extends Activity {
         if (requestCode == 1) {
             //TODO Refresh
             //listJour
-            String erreur = data.getStringExtra("erreur");
+            String erreur = "";
+            if(data!=null){
+                erreur = data.getStringExtra("erreur");
+            }
             if(erreur != null && !erreur.isEmpty()){
                 textViewErreur.setText(erreur);
             }else{

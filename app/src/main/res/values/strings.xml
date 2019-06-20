@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">Muscle Building</string>
     <string-array name="type_aliment_array">
+        <item>Boisson</item>
+        <item>Céréales</item>
         <item>Féculent</item>
-        <item>Laitage</item>
+        <item>Fruit</item>
+        <item>Produit laitier</item>
         <item>Légume</item>
         <item>Poisson</item>
-        <item>Boisson</item>
+        <item>Poudre</item>
         <item>Sauce</item>
         <item>Viande</item>
-        <item>Fruit</item>
     </string-array>
     <string-array name="type_repas_array">
         <item>Matin</item>

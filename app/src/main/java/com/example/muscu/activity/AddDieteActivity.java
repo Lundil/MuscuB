@@ -15,6 +15,7 @@ import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
+import com.example.muscu.model.AlimentRepasModel;
 import com.example.muscu.model.JourModel;
 import com.example.muscu.model.RepasModel;
 import com.example.muscu.model.UtilisateurModel;
@@ -147,7 +148,6 @@ public class AddDieteActivity extends Activity {
             }
         });
 
-
         createDiete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(isGUIFilled()){
@@ -215,6 +215,30 @@ public class AddDieteActivity extends Activity {
             jour.repasMidi=dejeuners.get(0);
             //dejeuners.remove(jour.repasMidi);
             jour.repasDiner=diners.get(0);
+
+            //TODO set quantite
+            List<AlimentRepasModel> listAlimentRepasModel = AlimentRepasModel.getAlimentRepasModelByRepas(jour.repasMatin.getId());
+            AlimentModel alim = null;
+            for (AlimentRepasModel alimDuRepas : listAlimentRepasModel) {
+                alim = AlimentModel.getAlimentById(alimDuRepas.alimentModel);
+                if("Boisson".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=17.0;
+                }else if("Céréales".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=100.0;
+                }else if("Viande".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=125.0;
+                }else if("Poisson".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=125.0;
+                }else if("Féculent".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=70.0;
+                }else if("Légume".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=250.0;
+                }else if("Sauce".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=10.0;
+                }
+                alimDuRepas.save();
+            }
+
             //diners.remove(jour.repasDiner);
             /*if(collations){
                 for(int i =0; i < Integer.parseInt(user.nbRepas)-3 ;i++){
@@ -223,7 +247,7 @@ public class AddDieteActivity extends Activity {
             }*/
             jour.save();
         }
-        erreur+="Ici figureront les conseils pour bien préparer votre diète";
+        //erreur+="Ici figureront les conseils pour bien préparer votre diète";
         if(!erreur.isEmpty()){
             Intent intent = new Intent();
             intent.putExtra("erreur", erreur);

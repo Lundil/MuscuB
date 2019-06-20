@@ -122,7 +122,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Diner(s) disponible(s) : "
+        android:text="Encas disponible(s) : "
         android:layout_below="@+id/listDinerSelected"/>
 
     <ListView
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="Diner(s) sélectionné(s) : "
+        android:text="Encas sélectionné(s) : "
         android:layout_toRightOf="@+id/textViewEncasDisponibles"
         android:layout_below="@+id/listDinerSelected"/>
 

@@ -54,10 +54,10 @@ public class RepasModel extends Model implements Serializable {
         return new Select().from(RepasModel.class).where("isMidi = ?", isMidi).orderBy("nom").execute();
     }
     public static List<RepasModel> getRepasByIsMatin(Boolean isMatin){
-        return new Select().from(RepasModel.class).where("isMidi = ?", isMatin).orderBy("nom").execute();
+        return new Select().from(RepasModel.class).where("isMatin = ?", isMatin).orderBy("nom").execute();
     }
     public static List<RepasModel> getRepasByIsDiner(Boolean isDiner){
-        return new Select().from(RepasModel.class).where("isMidi = ?", isDiner).orderBy("nom").execute();
+        return new Select().from(RepasModel.class).where("isDiner = ?", isDiner).orderBy("nom").execute();
     }
 
     public static List<RepasModel> getAllRepas(){
