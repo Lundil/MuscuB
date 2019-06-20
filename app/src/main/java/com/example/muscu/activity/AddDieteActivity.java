@@ -22,6 +22,7 @@ import com.example.muscu.model.UtilisateurModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -37,6 +38,10 @@ public class AddDieteActivity extends Activity {
     private Button createDiete;
     private String erreur = "";
     private UtilisateurModel user;
+    private Double dailyNeedsKcal = 0.0, dailyNeedsProteine = 0.0, dailyNeedsLipide = 0.0, dailyNeedsGlucide = 0.0, repasNeedsKcal = 0.0, repasNeedsProteine = 0.0,
+            repasDailyNeedsLipide = 0.0, repasNeedsGlucide = 0.0, dailyNeedsCompletedProteine = 0.0,dailyNeedsCompletedLipide = 0.0,dailyNeedsCompletedGlucide = 0.0,
+            repasNeedsCompletedProteine = 0.0,repasNeedsCompletedLipide = 0.0,repasNeedsCompletedGlucide = 0.0;
+    private HashMap<JourModel,Double> mapBesoinAtteindProteine = new HashMap<>(), mapBesoinAtteindGlucide = new HashMap<>(), mapBesoinAtteindLipide = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -191,13 +196,25 @@ public class AddDieteActivity extends Activity {
         Random ran = new Random();
         boolean collations = Integer.parseInt(user.nbRepas) > 3;
         int ordre = 0;
+        //Supprime l'ancienne diète
         List<JourModel> list = JourModel.getAllJours();
         for (JourModel jour : list) {
             jour.delete();
         }
+        //Besoins caloriques, en proteine, glucide et lipide journalier
+        dailyNeedsKcal = user.getUserDailyNeeds();//kcal
+        dailyNeedsProteine = user.poids*2.0;//grammes
+        dailyNeedsLipide = user.poids*1.25;//grammes
+        dailyNeedsGlucide = (dailyNeedsKcal-dailyNeedsProteine-dailyNeedsLipide);//grammes
+
+        repasNeedsKcal = dailyNeedsKcal / Double.parseDouble(user.getNbRepas());//kcal
+        repasNeedsProteine = dailyNeedsProteine / Double.parseDouble(user.getNbRepas());//grammes
+        repasDailyNeedsLipide = dailyNeedsLipide / Double.parseDouble(user.getNbRepas());//grammes
+        repasNeedsGlucide = dailyNeedsGlucide / Double.parseDouble(user.getNbRepas());//grammes
+
         for (String day : nomJourSemaine) {
             ordre++;
-            //TODO
+            //DIstribution diversifiée des repas
             JourModel jour = new JourModel();
             if(pDJs.isEmpty()){
                 pDJs = listPdjSelected;
@@ -216,7 +233,6 @@ public class AddDieteActivity extends Activity {
             //dejeuners.remove(jour.repasMidi);
             jour.repasDiner=diners.get(0);
 
-            //TODO set quantite
             List<AlimentRepasModel> listAlimentRepasModel = AlimentRepasModel.getAllAlimentRepasModel();
             AlimentModel alim = null;
             for (AlimentRepasModel alimDuRepas : listAlimentRepasModel) {
@@ -240,6 +256,16 @@ public class AddDieteActivity extends Activity {
                 }else if("Poudre".equalsIgnoreCase(alim.getTypeAliment())){
                     alimDuRepas.quantite=20.0;
                 }
+                //proteines obtenues
+                dailyNeedsCompletedProteine += alim.getProteine();
+
+                //lipides obtenues
+                dailyNeedsCompletedLipide += alim.getLipide();
+
+                //glucides obtenues
+                dailyNeedsCompletedGlucide += alim.getGlucide();
+
+                //SAVE
                 alimDuRepas.save();
             }
 
@@ -249,7 +275,16 @@ public class AddDieteActivity extends Activity {
                     jour.collations=new ArrayList<>();
                 }
             }*/
+            //TODO set quantite
+            //Ici on doit avoir les taux de protein, glucide et lipide récupérés
+            //Si il manque des proteines, glucide ou lipide, on va en chercher dans différentes sources
+            baguetteMagiqueMacros();
+            //SAVE
             jour.save();
+            //Besoins
+            mapBesoinAtteindProteine.put(jour,dailyNeedsCompletedProteine);
+            mapBesoinAtteindLipide.put(jour,dailyNeedsCompletedLipide);
+            mapBesoinAtteindGlucide.put(jour,dailyNeedsCompletedGlucide);
         }
         //erreur+="Ici figureront les conseils pour bien préparer votre diète";
         if(!erreur.isEmpty()){
@@ -263,6 +298,30 @@ public class AddDieteActivity extends Activity {
         }
         finish();
 
+    }
+
+    //Set toutes les bonnes macros
+    private void baguetteMagiqueMacros(){
+        List<JourModel> listJourModel = JourModel.getAllJours();
+        Double proteine, lipide, glucide;
+        for (JourModel  jour : listJourModel) {
+            //On travaille sur chaque jour
+            mapBesoinAtteindProteine.get(jour);
+            mapBesoinAtteindLipide.get(jour);
+            mapBesoinAtteindGlucide.get(jour);
+            if(dailyNeedsCompletedProteine < dailyNeedsProteine){
+                //Besoin en proteine
+
+            }
+            if(dailyNeedsCompletedLipide < dailyNeedsLipide){
+                //Besoin en lipide
+
+            }
+            if(dailyNeedsCompletedGlucide < dailyNeedsGlucide){
+                //Besoin en glucide
+
+            }
+        }
     }
 
 }
