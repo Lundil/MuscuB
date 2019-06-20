@@ -7,7 +7,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.muscu.R;
-import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.adapter.AlimentQuantiteListAdapter;
 import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.AlimentRepasModel;
@@ -18,10 +17,10 @@ import java.util.List;
 
 public class JourActivity extends Activity {
 
-    private TextView textViewTitreJour,textViewPetitDej;
-    private ListView listRepasAliment;
+    private TextView textViewTitreJour, textViewPetitDej, textViewMidi, textViewDiner;
+    private ListView listViewRepasAlimentPetitDej, listViewRepasAlimentMidij, listViewRepasAlimentDiner;
     private List<String> listAlimentModelQuantite;
-    private List<AlimentRepasModel> listAlimentRepasModel;
+    private List<AlimentRepasModel> listRepasAlimentPdj,listRepasAlimentMidi,listRepasAlimentDiner;
     private AlimentQuantiteListAdapter alimentQuantiteListAdapter;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +30,12 @@ public class JourActivity extends Activity {
 
         textViewTitreJour = findViewById(R.id.textViewTitreJour);
         textViewPetitDej = findViewById(R.id.textViewPetitDej);
+        textViewMidi = findViewById(R.id.textViewMidi);
+        textViewDiner = findViewById(R.id.textViewDiner);
 
-        listRepasAliment = findViewById(R.id.listRepasAliment);
+        listViewRepasAlimentPetitDej = findViewById(R.id.listRepasAlimentPetitDej);
+        listViewRepasAlimentMidij = findViewById(R.id.listRepasAlimentMidi);
+        listViewRepasAlimentDiner = findViewById(R.id.listRepasAlimentDiner);
 
         Long idJourModelSelected = (Long) getIntent().getLongExtra("idJourModelSelected", 0L);
         if(idJourModelSelected != 0L){
@@ -40,18 +43,46 @@ public class JourActivity extends Activity {
 
             textViewTitreJour.setText(jourModel.getNom());
             textViewPetitDej.setText(jourModel.getRepasMatin().nom);
+            textViewMidi.setText(jourModel.getRepasMidi().nom);
+            textViewDiner.setText(jourModel.getRepasDiner().nom);
 
-            listAlimentRepasModel = AlimentRepasModel.getAlimentRepasModelByRepas(jourModel.getRepasMatin().getId());
-            if(listAlimentRepasModel!=null){
+            listRepasAlimentPdj = AlimentRepasModel.getAlimentRepasModelByRepas(jourModel.getRepasMatin().getId());
+            if(listRepasAlimentPdj!=null){
                 listAlimentModelQuantite = new ArrayList<>();
                 AlimentModel alim = null;
-                for (AlimentRepasModel alimRepas : listAlimentRepasModel) {
+                for (AlimentRepasModel alimRepas : listRepasAlimentPdj) {
                     alim = AlimentModel.getAlimentById(alimRepas.alimentModel);
                     listAlimentModelQuantite.add(alim.getNom()+" "+alimRepas.quantite + " " + ("Boisson".equalsIgnoreCase(alim.getTypeAliment()) ? "cl" : "g"));
                 }
 
                 alimentQuantiteListAdapter = new AlimentQuantiteListAdapter(this, R.layout.adapter_view_aliment_quantite_layout, listAlimentModelQuantite);
-                listRepasAliment.setAdapter(alimentQuantiteListAdapter);
+                listViewRepasAlimentPetitDej.setAdapter(alimentQuantiteListAdapter);
+            }
+
+            listRepasAlimentMidi = AlimentRepasModel.getAlimentRepasModelByRepas(jourModel.getRepasMidi().getId());
+            if(listRepasAlimentMidi!=null){
+                listAlimentModelQuantite = new ArrayList<>();
+                AlimentModel alim = null;
+                for (AlimentRepasModel alimRepas : listRepasAlimentMidi) {
+                    alim = AlimentModel.getAlimentById(alimRepas.alimentModel);
+                    listAlimentModelQuantite.add(alim.getNom()+" "+alimRepas.quantite + " " + ("Boisson".equalsIgnoreCase(alim.getTypeAliment()) ? "cl" : "g"));
+                }
+
+                alimentQuantiteListAdapter = new AlimentQuantiteListAdapter(this, R.layout.adapter_view_aliment_quantite_layout, listAlimentModelQuantite);
+                listViewRepasAlimentMidij.setAdapter(alimentQuantiteListAdapter);
+            }
+
+            listRepasAlimentDiner = AlimentRepasModel.getAlimentRepasModelByRepas(jourModel.getRepasDiner().getId());
+            if(listRepasAlimentDiner!=null){
+                listAlimentModelQuantite = new ArrayList<>();
+                AlimentModel alim = null;
+                for (AlimentRepasModel alimRepas : listRepasAlimentDiner) {
+                    alim = AlimentModel.getAlimentById(alimRepas.alimentModel);
+                    listAlimentModelQuantite.add(alim.getNom()+" "+alimRepas.quantite + " " + ("Boisson".equalsIgnoreCase(alim.getTypeAliment()) ? "cl" : "g"));
+                }
+
+                alimentQuantiteListAdapter = new AlimentQuantiteListAdapter(this, R.layout.adapter_view_aliment_quantite_layout, listAlimentModelQuantite);
+                listViewRepasAlimentDiner.setAdapter(alimentQuantiteListAdapter);
             }
         }
     }

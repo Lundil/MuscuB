@@ -217,7 +217,7 @@ public class AddDieteActivity extends Activity {
             jour.repasDiner=diners.get(0);
 
             //TODO set quantite
-            List<AlimentRepasModel> listAlimentRepasModel = AlimentRepasModel.getAlimentRepasModelByRepas(jour.repasMatin.getId());
+            List<AlimentRepasModel> listAlimentRepasModel = AlimentRepasModel.getAllAlimentRepasModel();
             AlimentModel alim = null;
             for (AlimentRepasModel alimDuRepas : listAlimentRepasModel) {
                 alim = AlimentModel.getAlimentById(alimDuRepas.alimentModel);
@@ -235,6 +235,10 @@ public class AddDieteActivity extends Activity {
                     alimDuRepas.quantite=250.0;
                 }else if("Sauce".equalsIgnoreCase(alim.getTypeAliment())){
                     alimDuRepas.quantite=10.0;
+                }else if("Produit laitier".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=10.0;
+                }else if("Poudre".equalsIgnoreCase(alim.getTypeAliment())){
+                    alimDuRepas.quantite=20.0;
                 }
                 alimDuRepas.save();
             }

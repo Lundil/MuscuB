@@ -21,18 +21,56 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
-        android:text="Nom du jour"
+        android:text="Petit déjeuner"
         android:fontFamily="@font/comfortaa"
         android:layout_below="@+id/textViewTitreJour"
         android:textSize="25sp" />
 
     <ListView
-        android:id="@+id/listRepasAliment"
+        android:id="@+id/listRepasAlimentPetitDej"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textViewPetitDej"/>
+
+    <TextView
+        android:id="@+id/textViewMidi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Petit déjeuner"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/listRepasAlimentPetitDej"
+        android:textSize="25sp" />
+
+    <ListView
+        android:id="@+id/listRepasAlimentMidi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewMidi"/>
+
+    <TextView
+        android:id="@+id/textViewDiner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Petit déjeuner"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/listRepasAlimentMidi"
+        android:textSize="25sp" />
+
+    <ListView
+        android:id="@+id/listRepasAlimentDiner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewDiner"/>
 
 
 </RelativeLayout>

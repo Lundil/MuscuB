@@ -18,6 +18,10 @@ public class AlimentRepasModel extends Model {
     @Column(name = "quantite")
     public Double quantite;
 
+    public static List<AlimentRepasModel> getAllAlimentRepasModel(){
+        return new Select().from(AlimentRepasModel.class).execute();
+    }
+
     public static List<AlimentRepasModel> getAlimentRepasModelByRepas(Long id){
         return new Select().from(AlimentRepasModel.class).where("repas = ?", id).execute();
     }

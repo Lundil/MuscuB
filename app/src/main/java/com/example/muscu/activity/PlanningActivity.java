@@ -21,6 +21,7 @@ import com.example.muscu.model.JourModel;
 import com.example.muscu.model.RepasModel;
 import com.example.muscu.model.UtilisateurModel;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -173,6 +174,11 @@ public class PlanningActivity extends Activity {
             }
             if(erreur != null && !erreur.isEmpty()){
                 textViewErreur.setText(erreur);
+                listView = findViewById(R.id.listJour);
+                jourModelList = new ArrayList<>();
+                jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_jour_layout, jourModelList);
+                listView.setAdapter(jourListAdapter);
+                buttonCreateDiete.setText("Créer votre diète");
             }else{
                 listView = findViewById(R.id.listJour);
                 jourModelList = JourModel.getAllJours();
