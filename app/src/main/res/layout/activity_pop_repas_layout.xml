@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <TextView
+        android:id="@+id/textViewQuantite"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:gravity="left|center"
+        android:layout_marginLeft="20sp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Quantité (gr/cl): " />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:ems="10"
+        android:layout_toRightOf="@+id/textViewQuantite"
+        android:layout_marginLeft="90sp"
+        android:fontFamily="@font/comfortaa"
+        android:hint="0"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/textViewQuantite"
+        android:background="#e51057"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="20sp"
+        android:fontFamily="@font/comfortaa"
+        android:text="Supprimer"/>
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/buttonDelete"
+        android:background="#2372db"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/textViewQuantite"
+        android:text="Enregistrer" />
+
+
+</RelativeLayout>

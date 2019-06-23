@@ -150,15 +150,11 @@ public class NutritionActivity extends AppCompatActivity {
     private String isConfitionPlanningOK(){
         String erreur = "";
         //Tester 1 PDJ, 1 MIDI, 1 DINER, 1 collation que lipide, 1 collation que lipide, 1 collation que glucide
-        List<AlimentModel> listAlimentsEncas = AlimentModel.getAlimentsByIsEncas(true);
-        List<RepasModel> listdwfg = RepasModel.getAllRepas();
         List<RepasModel> listRepasMatin = RepasModel.getRepasByIsMatin(true);
         List<RepasModel> listRepasMidi = RepasModel.getRepasByIsMidi(true);
         List<RepasModel> listRepasDiner =RepasModel.getRepasByIsDiner(true);
+        List<RepasModel> listRepasEncas =RepasModel.getRepasByIsEncas(true);
         //Check
-        if(listAlimentsEncas.isEmpty()){
-            erreur+="Manque un encas\n";
-        }
         if(listRepasMatin.isEmpty()){
             erreur+="Manque un petit déjeuner\n";
 
@@ -169,6 +165,9 @@ public class NutritionActivity extends AppCompatActivity {
         }
         if(listRepasDiner.isEmpty()){
             erreur+="Manque un diner\n";
+        }
+        if(listRepasEncas.isEmpty()){
+            erreur+="Manque un encas\n";
         }
         return erreur.trim();
     }

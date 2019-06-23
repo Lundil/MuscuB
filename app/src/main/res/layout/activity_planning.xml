@@ -33,15 +33,5 @@
         android:text="Changer de diète"
         android:fontFamily="@font/comfortaa"/>
 
-    <TextView
-        android:id="@+id/textView_erreur"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonCreateDiete"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/comfortaa"
-        android:textSize="20sp" />
-
 
 </RelativeLayout>

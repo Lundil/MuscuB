@@ -12,7 +12,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.muscu.R;
-import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.adapter.RepasListAdapter;
 import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.AlimentRepasModel;
@@ -30,17 +29,14 @@ public class AddDieteActivity extends Activity {
 
     private ListView listViewPdjDispos, listViewDejDispos, listViewDinerDispos, listViewEncasDispos, listViewPdjSelected, listViewDejSelected, listViewDinerSelected, listViewEncasSelected;
     private RepasModel repasSelected;
-    private List<RepasModel> listPdjDispos, listDejDispos, listDinerDispos, listPdjSelected = new ArrayList<>(), listDejSelected = new ArrayList<>(), listDinerSelected = new ArrayList<>();
-    private List<AlimentModel> listEncasDispos, listEncasSelected = new ArrayList<>();
-    private AlimentListAdapter alimentListAdapterDispo,alimentListAdapterSelected;
-    private RepasListAdapter repasListAdapterPdjDispo,repasListAdapterMidiDispo,repasListAdapterDinerDispo,repasListAdapterPdjSelected,repasListAdapterMidiSelected,repasListAdapterDinerSelected;
-    private AlimentModel alimentSelected;
+    private List<RepasModel> listPdjDispos, listDejDispos, listDinerDispos, listEncasDispos,
+            listPdjSelected = new ArrayList<>(), listDejSelected = new ArrayList<>(), listDinerSelected = new ArrayList<>(), listEncasSelected = new ArrayList<>();
+    private RepasListAdapter repasListAdapterPdjDispo,repasListAdapterMidiDispo,repasListAdapterDinerDispo,repasListAdapterEncasDispo, repasListAdapterPdjSelected,repasListAdapterMidiSelected,repasListAdapterDinerSelected,repasListAdapterEncasSelected;
     private Button createDiete;
     private String erreur = "";
     private UtilisateurModel user;
     private Double dailyNeedsKcal = 0.0, dailyNeedsProteine = 0.0, dailyNeedsLipide = 0.0, dailyNeedsGlucide = 0.0, repasNeedsKcal = 0.0, repasNeedsProteine = 0.0,
-            repasDailyNeedsLipide = 0.0, repasNeedsGlucide = 0.0, dailyNeedsCompletedProteine = 0.0,dailyNeedsCompletedLipide = 0.0,dailyNeedsCompletedGlucide = 0.0,
-            repasNeedsCompletedProteine = 0.0,repasNeedsCompletedLipide = 0.0,repasNeedsCompletedGlucide = 0.0;
+            repasDailyNeedsLipide = 0.0, repasNeedsGlucide = 0.0, dailyNeedsCompletedProteine = 0.0,dailyNeedsCompletedLipide = 0.0,dailyNeedsCompletedGlucide = 0.0;
     private HashMap<JourModel,Double> mapBesoinAtteindProteine = new HashMap<>(), mapBesoinAtteindGlucide = new HashMap<>(), mapBesoinAtteindLipide = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +56,10 @@ public class AddDieteActivity extends Activity {
         listViewEncasSelected=findViewById(R.id.listEncasSelected);
         createDiete = findViewById(R.id.createDiete);
 
-        listEncasDispos = AlimentModel.getAlimentsByIsEncas(true);
         listPdjDispos = RepasModel.getRepasByIsMatin(true);
         listDejDispos = RepasModel.getRepasByIsMidi(true);
         listDinerDispos =RepasModel.getRepasByIsDiner(true);
+        listEncasDispos = RepasModel.getRepasByIsEncas(true);
         user = UtilisateurModel.getAllUtilisateurs();
 
         refreshLists();
@@ -104,9 +100,9 @@ public class AddDieteActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
                 view.setSelected(true);
-                alimentSelected = alimentListAdapterDispo.getItem(position);
-                listEncasSelected.add(alimentSelected);
-                listEncasDispos.remove(alimentSelected);
+                repasSelected = repasListAdapterEncasDispo.getItem(position);
+                listEncasSelected.add(repasSelected);
+                listEncasDispos.remove(repasSelected);
                 refreshLists();
             }
         });
@@ -146,9 +142,9 @@ public class AddDieteActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long arg3) {
                 view.setSelected(true);
-                alimentSelected = alimentListAdapterSelected.getItem(position);
-                listEncasSelected.remove(alimentSelected);
-                listEncasDispos.add(alimentSelected);
+                repasSelected = repasListAdapterEncasSelected.getItem(position);
+                listEncasSelected.remove(repasSelected);
+                listEncasDispos.add(repasSelected);
                 refreshLists();
             }
         });
@@ -173,8 +169,8 @@ public class AddDieteActivity extends Activity {
         listViewDejDispos.setAdapter(repasListAdapterMidiDispo);
         repasListAdapterDinerDispo = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, listDinerDispos);
         listViewDinerDispos.setAdapter(repasListAdapterDinerDispo);
-        alimentListAdapterDispo = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, listEncasDispos);
-        listViewEncasDispos.setAdapter(alimentListAdapterDispo);
+        repasListAdapterEncasDispo = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, listEncasDispos);
+        listViewEncasDispos.setAdapter(repasListAdapterEncasDispo);
         //Selected
         repasListAdapterPdjSelected = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, listPdjSelected);
         listViewPdjSelected.setAdapter(repasListAdapterPdjSelected);
@@ -182,8 +178,8 @@ public class AddDieteActivity extends Activity {
         listViewDejSelected.setAdapter(repasListAdapterMidiSelected);
         repasListAdapterDinerSelected = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, listDinerSelected);
         listViewDinerSelected.setAdapter(repasListAdapterDinerSelected);
-        alimentListAdapterSelected = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, listEncasSelected);
-        listViewEncasSelected.setAdapter(alimentListAdapterSelected);
+        repasListAdapterEncasSelected = new RepasListAdapter(this, R.layout.adapter_view_aliment_layout, listEncasSelected);
+        listViewEncasSelected.setAdapter(repasListAdapterEncasSelected);
     }
 
     private boolean isGUIFilled(){
@@ -192,8 +188,20 @@ public class AddDieteActivity extends Activity {
 
     private void creerDiete(){
         List<String> nomJourSemaine = Arrays.asList("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
-        List<RepasModel> pDJs = listPdjSelected, dejeuners = listDejSelected, diners = listDinerSelected;
-        Random ran = new Random();
+        List<RepasModel> pDJs = new ArrayList<>(), dejeuners = new ArrayList<>(), diners = new ArrayList<>(), encas = new ArrayList<>();
+        for (RepasModel clone : listPdjSelected) {
+            pDJs.add(clone);
+        }
+        for (RepasModel clone : listDejSelected) {
+            dejeuners.add(clone);
+        }
+        for (RepasModel clone : listDinerSelected) {
+            diners.add(clone);
+        }
+        for (RepasModel clone : listEncasSelected) {
+            encas.add(clone);
+        }
+        Random rand = new Random();
         boolean collations = Integer.parseInt(user.nbRepas) > 3;
         int ordre = 0;
         //Supprime l'ancienne diète
@@ -201,127 +209,49 @@ public class AddDieteActivity extends Activity {
         for (JourModel jour : list) {
             jour.delete();
         }
-        //Besoins caloriques, en proteine, glucide et lipide journalier
-        dailyNeedsKcal = user.getUserDailyNeeds();//kcal
-        dailyNeedsProteine = user.poids*2.0;//grammes
-        dailyNeedsLipide = user.poids*1.25;//grammes
-        dailyNeedsGlucide = (dailyNeedsKcal-dailyNeedsProteine-dailyNeedsLipide);//grammes
-
-        repasNeedsKcal = dailyNeedsKcal / Double.parseDouble(user.getNbRepas());//kcal
-        repasNeedsProteine = dailyNeedsProteine / Double.parseDouble(user.getNbRepas());//grammes
-        repasDailyNeedsLipide = dailyNeedsLipide / Double.parseDouble(user.getNbRepas());//grammes
-        repasNeedsGlucide = dailyNeedsGlucide / Double.parseDouble(user.getNbRepas());//grammes
-
         for (String day : nomJourSemaine) {
             ordre++;
-            //DIstribution diversifiée des repas
+            //Distribution diversifiée des repas
             JourModel jour = new JourModel();
-            if(pDJs.isEmpty()){
-                pDJs = listPdjSelected;
-            }
-            if(dejeuners.isEmpty()){
-                dejeuners = listDejSelected;
-            }
-            if(diners.isEmpty()){
-                diners = listDinerSelected;
-            }
             jour.ordre=ordre;
             jour.nom=day;
-            jour.repasMatin=pDJs.get(0);
-            //pDJs.remove(jour.repasMatin);
-            jour.repasMidi=dejeuners.get(0);
-            //dejeuners.remove(jour.repasMidi);
-            jour.repasDiner=diners.get(0);
-
-            List<AlimentRepasModel> listAlimentRepasModel = AlimentRepasModel.getAllAlimentRepasModel();
-            AlimentModel alim = null;
-            for (AlimentRepasModel alimDuRepas : listAlimentRepasModel) {
-                alim = AlimentModel.getAlimentById(alimDuRepas.alimentModel);
-                if("Boisson".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=17.0;
-                }else if("Céréales".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=100.0;
-                }else if("Viande".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=125.0;
-                }else if("Poisson".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=125.0;
-                }else if("Féculent".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=70.0;
-                }else if("Légume".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=250.0;
-                }else if("Sauce".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=10.0;
-                }else if("Produit laitier".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=10.0;
-                }else if("Poudre".equalsIgnoreCase(alim.getTypeAliment())){
-                    alimDuRepas.quantite=20.0;
+            //Jours
+            if(pDJs.isEmpty()){
+                for (RepasModel clone : listPdjSelected) {
+                    pDJs.add(clone);
                 }
-                //proteines obtenues
-                dailyNeedsCompletedProteine += alim.getProteine();
-
-                //lipides obtenues
-                dailyNeedsCompletedLipide += alim.getLipide();
-
-                //glucides obtenues
-                dailyNeedsCompletedGlucide += alim.getGlucide();
-
-                //SAVE
-                alimDuRepas.save();
             }
-
-            //diners.remove(jour.repasDiner);
-            /*if(collations){
-                for(int i =0; i < Integer.parseInt(user.nbRepas)-3 ;i++){
-                    jour.collations=new ArrayList<>();
+            if(dejeuners.isEmpty()){
+                for (RepasModel clone : listDejSelected) {
+                    dejeuners.add(clone);
                 }
-            }*/
-            //TODO set quantite
-            //Ici on doit avoir les taux de protein, glucide et lipide récupérés
-            //Si il manque des proteines, glucide ou lipide, on va en chercher dans différentes sources
-            baguetteMagiqueMacros();
-            //SAVE
+            }
+            if(diners.isEmpty()){
+                for (RepasModel clone : listDinerSelected) {
+                    diners.add(clone);
+                }
+            }
+            if(encas.isEmpty()){
+                for (RepasModel clone : listEncasSelected) {
+                    encas.add(clone);
+                }
+            }
+            jour.repasMatin=pDJs.get(rand.nextInt(pDJs.size()));
+            jour.repasMidi=dejeuners.get(rand.nextInt(dejeuners.size()));
+            jour.repasDiner=diners.get(rand.nextInt(diners.size()));
+            jour.repasEncas1=encas.get(rand.nextInt(encas.size()));
+            encas.remove(jour.repasEncas1);
+            jour.repasEncas2=encas.get(rand.nextInt(encas.size()));
+            encas.remove(jour.repasEncas2);
+            jour.repasEncas3=encas.get(rand.nextInt(encas.size()));
+            encas.remove(jour.repasEncas3);
             jour.save();
-            //Besoins
-            mapBesoinAtteindProteine.put(jour,dailyNeedsCompletedProteine);
-            mapBesoinAtteindLipide.put(jour,dailyNeedsCompletedLipide);
-            mapBesoinAtteindGlucide.put(jour,dailyNeedsCompletedGlucide);
-        }
-        //erreur+="Ici figureront les conseils pour bien préparer votre diète";
-        if(!erreur.isEmpty()){
-            Intent intent = new Intent();
-            intent.putExtra("erreur", erreur);
-            setResult(Activity.RESULT_OK, intent);
-            list = JourModel.getAllJours();
-            for (JourModel jour : list) {
-                jour.delete();
-            }
+            //Variété des repas
+            pDJs.remove(jour.repasMatin);
+            dejeuners.remove(jour.repasMidi);
+            diners.remove(jour.repasDiner);
         }
         finish();
 
     }
-
-    //Set toutes les bonnes macros
-    private void baguetteMagiqueMacros(){
-        List<JourModel> listJourModel = JourModel.getAllJours();
-        Double proteine, lipide, glucide;
-        for (JourModel  jour : listJourModel) {
-            //On travaille sur chaque jour
-            mapBesoinAtteindProteine.get(jour);
-            mapBesoinAtteindLipide.get(jour);
-            mapBesoinAtteindGlucide.get(jour);
-            if(dailyNeedsCompletedProteine < dailyNeedsProteine){
-                //Besoin en proteine
-
-            }
-            if(dailyNeedsCompletedLipide < dailyNeedsLipide){
-                //Besoin en lipide
-
-            }
-            if(dailyNeedsCompletedGlucide < dailyNeedsGlucide){
-                //Besoin en glucide
-
-            }
-        }
-    }
-
 }

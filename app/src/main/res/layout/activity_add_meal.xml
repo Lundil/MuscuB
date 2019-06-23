@@ -5,6 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+    <TextView
+        android:id="@+id/textViewNeeds"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:hint="Besoins"
+        android:textSize="10sp"
+        android:inputType="textPersonName" />
+
     <EditText
         android:id="@+id/editNom"
         android:layout_width="300dp"
@@ -12,6 +22,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:hint="Nom"
+        android:layout_below="@+id/textViewNeeds"
         android:inputType="textPersonName" />
 
     <EditText
@@ -28,14 +39,14 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editDescription"
         android:layout_marginTop="20dp"
-        android:layout_toLeftOf="@+id/checkbox_midi"
+        android:layout_marginLeft="40dp"
         android:text="Matin"/>
 
     <CheckBox android:id="@+id/checkbox_midi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/editDescription"
+        android:layout_toRightOf="@+id/checkbox_matin"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:text="Midi"/>
@@ -49,6 +60,15 @@
         android:layout_marginLeft="10dp"
         android:text="Diner"/>
 
+    <CheckBox android:id="@+id/checkbox_encas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkbox_diner"
+        android:layout_below="@+id/editDescription"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:text="Encas"/>
+
     <TextView
         android:id="@+id/textViewAlimentsDisponibles"
         android:layout_width="300dp"
@@ -61,7 +81,7 @@
     <ListView
         android:id="@+id/listAliments"
         android:layout_width="300dp"
-        android:layout_height="125dp"
+        android:layout_height="100dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textViewAlimentsDisponibles"
@@ -80,7 +100,7 @@
     <ListView
         android:id="@+id/listAlimentsSelected"
         android:layout_width="300dp"
-        android:layout_height="125dp"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:layout_centerVertical="true"
         android:layout_below="@+id/textViewAlimentsDuRepas"
@@ -92,6 +112,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/listAlimentsSelected"
+        android:layout_centerHorizontal="true"
         android:layout_toRightOf="@+id/delete"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="10dp"

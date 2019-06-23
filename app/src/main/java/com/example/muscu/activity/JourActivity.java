@@ -2,6 +2,7 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class JourActivity extends Activity {
 
-    private TextView textViewTitreJour, textViewPetitDej, textViewMidi, textViewDiner;
+    private TextView textViewTitreJour, textViewPetitDej, textViewMidi, textViewDiner,  textViewEncas1, textViewEncas2, textViewEncas3;
     private ListView listViewRepasAlimentPetitDej, listViewRepasAlimentMidij, listViewRepasAlimentDiner;
     private List<String> listAlimentModelQuantite;
     private List<AlimentRepasModel> listRepasAlimentPdj,listRepasAlimentMidi,listRepasAlimentDiner;
@@ -32,6 +33,9 @@ public class JourActivity extends Activity {
         textViewPetitDej = findViewById(R.id.textViewPetitDej);
         textViewMidi = findViewById(R.id.textViewMidi);
         textViewDiner = findViewById(R.id.textViewDiner);
+        textViewEncas1 = findViewById(R.id.textViewEncas1);
+        textViewEncas2 = findViewById(R.id.textViewEncas2);
+        textViewEncas3 = findViewById(R.id.textViewEncas3);
 
         listViewRepasAlimentPetitDej = findViewById(R.id.listRepasAlimentPetitDej);
         listViewRepasAlimentMidij = findViewById(R.id.listRepasAlimentMidi);
@@ -45,7 +49,14 @@ public class JourActivity extends Activity {
             textViewPetitDej.setText(jourModel.getRepasMatin().nom);
             textViewMidi.setText(jourModel.getRepasMidi().nom);
             textViewDiner.setText(jourModel.getRepasDiner().nom);
+            /*if(){
+                if(){
+                    textViewEncas1.setText(jourModel.getRepasEncas1().nom);
+                }else{
+                    textViewEncas1.setVisibility(View.GONE);
+                }
 
+            }*/
             listRepasAlimentPdj = AlimentRepasModel.getAlimentRepasModelByRepas(jourModel.getRepasMatin().getId());
             if(listRepasAlimentPdj!=null){
                 listAlimentModelQuantite = new ArrayList<>();

@@ -21,6 +21,12 @@ public class JourModel extends Model implements Serializable {
     public RepasModel repasMidi;
     @Column(name = "repasDiner")
     public RepasModel repasDiner;
+    @Column(name = "repasEncas1")
+    public RepasModel repasEncas1;
+    @Column(name = "repasEncas2")
+    public RepasModel repasEncas2;
+    @Column(name = "repasEncas3")
+    public RepasModel repasEncas3;
 
     public JourModel() {
     }
@@ -73,4 +79,27 @@ public class JourModel extends Model implements Serializable {
         this.repasDiner = repasDiner;
     }
 
+    public RepasModel getRepasEncas1() {
+        return repasEncas1;
+    }
+
+    public void setRepasEncas1(RepasModel repasEncas1) {
+        this.repasEncas1 = repasEncas1;
+    }
+
+    public RepasModel getRepasEncas2() {
+        return repasEncas2;
+    }
+
+    public void setRepasEncas2(RepasModel repasEncas2) {
+        this.repasEncas2 = repasEncas2;
+    }
+
+    public RepasModel getRepasEncas3() {
+        return repasEncas3;
+    }
+
+    public void setRepasEncas3(RepasModel repasEncas3) {
+        this.repasEncas3 = repasEncas3;
+    }
 }

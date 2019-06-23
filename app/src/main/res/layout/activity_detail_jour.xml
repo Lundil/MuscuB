@@ -35,7 +35,7 @@
         android:layout_below="@+id/textViewPetitDej"/>
 
     <TextView
-        android:id="@+id/textViewMidi"
+        android:id="@+id/textViewEncas1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -43,6 +43,25 @@
         android:text="Petit déjeuner"
         android:fontFamily="@font/comfortaa"
         android:layout_below="@+id/listRepasAlimentPetitDej"
+        android:textSize="25sp" />
+
+    <ListView
+        android:id="@+id/listRepasAlimentEncas1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewEncas1"/>
+
+    <TextView
+        android:id="@+id/textViewMidi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Petit déjeuner"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/listRepasAlimentEncas1"
         android:textSize="25sp" />
 
     <ListView
@@ -54,7 +73,7 @@
         android:layout_below="@+id/textViewMidi"/>
 
     <TextView
-        android:id="@+id/textViewDiner"
+        android:id="@+id/textViewEncas2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -65,12 +84,50 @@
         android:textSize="25sp" />
 
     <ListView
+        android:id="@+id/listRepasAlimentEncas2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewEncas2"/>
+
+    <TextView
+        android:id="@+id/textViewDiner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Petit déjeuner"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/listRepasAlimentEncas2"
+        android:textSize="25sp" />
+
+    <ListView
         android:id="@+id/listRepasAlimentDiner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/textViewDiner"/>
+
+    <TextView
+        android:id="@+id/textViewEncas3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_centerHorizontal="true"
+        android:text="Petit déjeuner"
+        android:fontFamily="@font/comfortaa"
+        android:layout_below="@+id/listRepasAlimentDiner"
+        android:textSize="25sp" />
+
+    <ListView
+        android:id="@+id/listRepasAlimentEncas3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/textViewEncas3"/>
 
 
 </RelativeLayout>

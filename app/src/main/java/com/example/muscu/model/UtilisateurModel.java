@@ -8,8 +8,8 @@ import com.activeandroid.query.Select;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
-import java.util.List;
 
 public class UtilisateurModel extends Model implements Serializable {
 
@@ -71,6 +71,28 @@ public class UtilisateurModel extends Model implements Serializable {
 
         return bg.doubleValue();
 
+    }
+
+    public Double getUserDailyNeedsProtein(){
+        BigDecimal bg = BigDecimal.ZERO;
+        BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(this.nbRepas));
+        BigDecimal poidsBG = BigDecimal.valueOf(this.poids);
+        bg = poidsBG.multiply(BigDecimal.valueOf(2.0)).divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.CEILING);
+        return bg.doubleValue();
+    }
+
+    public Double getUserDailyNeedsLipide(){
+        return BigDecimal.valueOf(this.poids).setScale(2, RoundingMode.CEILING).doubleValue();
+    }
+
+    public Double getUserDailyNeedsGlucide(){
+        BigDecimal kcalProtein = BigDecimal.valueOf(getUserDailyNeedsProtein()).multiply(BigDecimal.valueOf(4.0));
+        BigDecimal kcalLipide = BigDecimal.valueOf(getUserDailyNeedsLipide()).multiply(BigDecimal.valueOf(4.0));
+        BigDecimal bg = BigDecimal.valueOf(this.getUserDailyNeeds());
+        bg = bg.subtract(kcalProtein);
+        bg = bg.subtract(kcalLipide);
+        bg = bg.divide(BigDecimal.valueOf(4.0), BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.CEILING);
+        return bg.doubleValue();
     }
 
     //Queries

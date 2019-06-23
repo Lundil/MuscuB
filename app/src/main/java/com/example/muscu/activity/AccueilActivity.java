@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.example.muscu.R;
 import com.example.muscu.model.UtilisateurModel;
 
-import java.util.List;
-
 public class AccueilActivity extends Activity {
 
     private Button button;

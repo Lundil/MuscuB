@@ -59,7 +59,9 @@ public class RepasModel extends Model implements Serializable {
     public static List<RepasModel> getRepasByIsDiner(Boolean isDiner){
         return new Select().from(RepasModel.class).where("isDiner = ?", isDiner).orderBy("nom").execute();
     }
-
+    public static List<RepasModel> getRepasByIsEncas(Boolean isEncas){
+        return new Select().from(RepasModel.class).where("isEncas = ?", isEncas).orderBy("nom").execute();
+    }
     public static List<RepasModel> getAllRepas(){
         return new Select().from(RepasModel.class).orderBy("nom").execute();
     }

@@ -1,6 +1,8 @@
 package com.example.muscu.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -12,13 +14,16 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.muscu.CustomPopup;
 import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.model.AlimentModel;
 import com.example.muscu.model.AlimentRepasModel;
 import com.example.muscu.model.RepasModel;
+import com.example.muscu.model.UtilisateurModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +31,14 @@ import java.util.List;
 public class AddMealActivity extends Activity {
 
     private Button save, delete;
+    private UtilisateurModel user;
     private EditText editNom;
     private EditText description;
+    private TextView textViewNeeds;
     private CheckBox checkMatin;
     private CheckBox checkMidi;
     private CheckBox checkDiner;
+    private CheckBox checkEncas;
     private ListView listView,listAlimentsSelected;
     private AlimentModel alimentSelected;
     private RepasModel repasSelected;
@@ -42,7 +50,9 @@ public class AddMealActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_add_meal);
-
+        user = UtilisateurModel.getAllUtilisateurs();
+        //FINDS
+        textViewNeeds = findViewById(R.id.textViewNeeds);
         listView = findViewById(R.id.listAliments);
         listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
         editNom = findViewById(R.id.editNom);
@@ -50,8 +60,11 @@ public class AddMealActivity extends Activity {
         checkMatin = findViewById(R.id.checkbox_matin);
         checkMidi = findViewById(R.id.checkbox_midi);
         checkDiner = findViewById(R.id.checkbox_diner);
+        checkEncas = findViewById(R.id.checkbox_encas);
         save = findViewById(R.id.save);
         delete = findViewById(R.id.delete);
+
+
         alimentModelList = AlimentModel.getAllAliments();
         if(alimentModelList!=null){
             alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
@@ -79,6 +92,7 @@ public class AddMealActivity extends Activity {
                         repasModel.isMatin=checkMatin.isChecked();
                         repasModel.isMidi=checkMidi.isChecked();
                         repasModel.isDiner=checkDiner.isChecked();
+                        repasModel.isEncas=checkEncas.isChecked();
                         repasModel.proteineTotal=totalProteine;
                         repasModel.lipideTotal=totalLipide;
                         repasModel.glucideTotal=totalGlucide;
@@ -92,7 +106,7 @@ public class AddMealActivity extends Activity {
                                 checkMatin.isChecked(),
                                 checkMidi.isChecked(),
                                 checkDiner.isChecked(),
-                                false);
+                                checkEncas.isChecked());
                     }
                     repasModel.save();
                     //TODO
@@ -115,9 +129,10 @@ public class AddMealActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
                 alimentSelected = alimentListAdapter.getItem(position);
-                alimentModelSelected.add(alimentSelected);
+                openPopRepas();
+                /*alimentModelSelected.add(alimentSelected);
                 alimentModelList.remove(alimentSelected);
-                refreshLists();
+                refreshLists();*/
             }
         });
         listAlimentsSelected.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -138,6 +153,7 @@ public class AddMealActivity extends Activity {
             checkMatin.setChecked(repasSelected.isMatin);
             checkMidi.setChecked(repasSelected.isMidi);
             checkDiner.setChecked(repasSelected.isDiner);
+            checkEncas.setChecked(repasSelected.isEncas);
 
             //TODO
             List<AlimentRepasModel> alimentsRepasModel = AlimentRepasModel.getAlimentRepasModelByRepas(repasSelected.getId());
@@ -173,6 +189,8 @@ public class AddMealActivity extends Activity {
             }
         });
 
+        //NEEDS
+        textViewNeeds.setText("Protéines : 0/"+user.getUserDailyNeedsProtein()+"g Lipides : 0/"+user.getUserDailyNeedsLipide()+"g Glucides : 0/"+user.getUserDailyNeedsGlucide()+"g");
     }
 
     private void refreshLists(){
@@ -186,7 +204,14 @@ public class AddMealActivity extends Activity {
 
     private boolean isGUIFilled() {
         return !editNom.getText().toString().isEmpty() &&
-                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked())
+                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked() || checkEncas.isChecked())
                 && !alimentModelSelected.isEmpty();
+    }
+
+    private void openPopRepas(){
+        /*Intent intent = new Intent(this, PopRepasActivity.class);
+        startActivityForResult(intent,1);*/
+        CustomPopup customPopup = new CustomPopup(this);
+        customPopup.build();
     }
 }
