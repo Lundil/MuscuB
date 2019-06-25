@@ -75,9 +75,8 @@ public class UtilisateurModel extends Model implements Serializable {
 
     public Double getUserDailyNeedsProtein(){
         BigDecimal bg = BigDecimal.ZERO;
-        BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(this.nbRepas));
         BigDecimal poidsBG = BigDecimal.valueOf(this.poids);
-        bg = poidsBG.multiply(BigDecimal.valueOf(2.0)).divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.CEILING);
+        bg = poidsBG.multiply(BigDecimal.valueOf(2.0)).setScale(2, RoundingMode.CEILING);
         return bg.doubleValue();
     }
 

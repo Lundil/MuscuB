@@ -1,5 +1,6 @@
 package com.example.muscu.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,9 +34,9 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         zXingScannerView.stopCamera();
         String resultText = result.getText();
         Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, AddFoodActivity.class);
-        intent.putExtra("codeBarre", resultText);
-        startActivity(intent);
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("codeBarre", resultText);
+        setResult(Activity.RESULT_OK,returnIntent);
         this.finish();
     }
 

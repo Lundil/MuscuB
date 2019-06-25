@@ -2,9 +2,8 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,12 +11,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.muscu.CustomPopup;
 import com.example.muscu.R;
 import com.example.muscu.adapter.AlimentListAdapter;
 import com.example.muscu.model.AlimentModel;
@@ -25,8 +22,13 @@ import com.example.muscu.model.AlimentRepasModel;
 import com.example.muscu.model.RepasModel;
 import com.example.muscu.model.UtilisateurModel;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddMealActivity extends Activity {
 
@@ -44,6 +46,8 @@ public class AddMealActivity extends Activity {
     private RepasModel repasSelected;
     private List<AlimentModel> alimentModelList, alimentModelSelected = new ArrayList<>();
     private AlimentListAdapter alimentListAdapter,alimentSelectedListAdapter;
+    private Double repasProt = 0.0,repasLip = 0.0,repasGlu = 0.0;
+    private HashMap<AlimentModel, Double> mapAlimentQuantite = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,73 @@ public class AddMealActivity extends Activity {
         save = findViewById(R.id.save);
         delete = findViewById(R.id.delete);
 
+        setup();
+    }
 
+    private void refreshLists(){
+        alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
+        listView.setAdapter(alimentListAdapter);
+        alimentSelectedListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelSelected);
+        listAlimentsSelected.setAdapter(alimentSelectedListAdapter);
+    }
+
+    private boolean isGUIFilled() {
+        return !editNom.getText().toString().isEmpty() &&
+                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked() || checkEncas.isChecked())
+                && !alimentModelSelected.isEmpty();
+    }
+
+    private void openPopRepas(boolean exist){
+        Intent intent = new Intent(this, PopRepasActivity.class);
+        if(exist){
+            intent.putExtra("quantiteExistante",mapAlimentQuantite.get(alimentSelected));
+        }
+        startActivityForResult(intent,1);
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                //set quantite
+                String quantite=data.getStringExtra("quantite");
+                boolean isDelete=(boolean)data.getBooleanExtra("isDelete", false);
+
+                if(StringUtils.isNotBlank(quantite)){
+                    //Ajoute à la liste des aliments sélectionnés + ajouter à la map des aliments / quantités
+                    mapAlimentQuantite.put(alimentSelected, Double.parseDouble(quantite));
+                    alimentModelSelected.add(alimentSelected);
+                    alimentModelList.remove(alimentSelected);
+
+                }else if(isDelete){
+                    //Supprimer de la liste des aliments sélectionnés + supprimer de la map des aliments / quantités
+                    mapAlimentQuantite.remove(alimentSelected);
+                    alimentModelList.add(alimentSelected);
+                    alimentModelSelected.remove(alimentSelected);
+                }
+            }else  if (resultCode == Activity.RESULT_CANCELED) {
+                //rien
+            }
+
+
+            setContentView(R.layout.activity_add_meal);
+            //FINDS
+            textViewNeeds = findViewById(R.id.textViewNeeds);
+            listView = findViewById(R.id.listAliments);
+            listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
+            editNom = findViewById(R.id.editNom);
+            description = findViewById(R.id.editDescription);
+            checkMatin = findViewById(R.id.checkbox_matin);
+            checkMidi = findViewById(R.id.checkbox_midi);
+            checkDiner = findViewById(R.id.checkbox_diner);
+            checkEncas = findViewById(R.id.checkbox_encas);
+            save = findViewById(R.id.save);
+            delete = findViewById(R.id.delete);
+            setup();
+            refreshLists();
+        }
+    }
+
+    private void setup(){
         alimentModelList = AlimentModel.getAllAliments();
         if(alimentModelList!=null){
             alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
@@ -129,10 +199,12 @@ public class AddMealActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
                 alimentSelected = alimentListAdapter.getItem(position);
-                openPopRepas();
-                /*alimentModelSelected.add(alimentSelected);
-                alimentModelList.remove(alimentSelected);
-                refreshLists();*/
+                setContentView(R.layout.activity_add_meal_darker);
+                listView = findViewById(R.id.listAliments);
+                listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
+                listView.setVisibility(View.GONE);
+                listAlimentsSelected.setVisibility(View.GONE);
+                openPopRepas(false);
             }
         });
         listAlimentsSelected.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -140,9 +212,12 @@ public class AddMealActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
                 view.setSelected(true);
                 alimentSelected = alimentSelectedListAdapter.getItem(position);
-                alimentModelList.add(alimentSelected);
-                alimentModelSelected.remove(alimentSelected);
-                refreshLists();
+                setContentView(R.layout.activity_add_meal_darker);
+                listView = findViewById(R.id.listAliments);
+                listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
+                listView.setVisibility(View.GONE);
+                listAlimentsSelected.setVisibility(View.GONE);
+                openPopRepas(true);
             }
         });
         Long idRepasModelSelected = (Long) getIntent().getLongExtra("idRepasModelSelected", 0L);
@@ -190,28 +265,26 @@ public class AddMealActivity extends Activity {
         });
 
         //NEEDS
-        textViewNeeds.setText("Protéines : 0/"+user.getUserDailyNeedsProtein()+"g Lipides : 0/"+user.getUserDailyNeedsLipide()+"g Glucides : 0/"+user.getUserDailyNeedsGlucide()+"g");
-    }
+        BigDecimal bgProt = BigDecimal.valueOf(user.getUserDailyNeedsProtein()),bgLip = BigDecimal.valueOf(user.getUserDailyNeedsLipide()),bgglu = BigDecimal.valueOf(user.getUserDailyNeedsGlucide());
+        BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(user.nbRepas));
+        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
 
-    private void refreshLists(){
-        alimentListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelList);
-        listView.setAdapter(alimentListAdapter);
-        alimentSelectedListAdapter = new AlimentListAdapter(this, R.layout.adapter_view_aliment_layout, alimentModelSelected);
-        listAlimentsSelected.setAdapter(alimentSelectedListAdapter);
+        //Map aliments quantité
+        BigDecimal bgProtTmpAliment = BigDecimal.ONE, bgLipTmpAliment = BigDecimal.ONE, bgGluTmpAliment = BigDecimal.ONE, bgProtAliment = BigDecimal.ONE, bgLipAliment = BigDecimal.ONE, bgGluAliment = BigDecimal.ONE;
+        for (Map.Entry<AlimentModel, Double> alimentQuantite : mapAlimentQuantite.entrySet()) {
+            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine());
+            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide());
+            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide());
+            bgProtAliment = bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
+            bgLipTmpAliment = bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
+            bgGluTmpAliment = bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
+            bgProtAliment = bgProtAliment.add(bgProtTmpAliment);
+            bgLipTmpAliment = bgLipAliment.add(bgLipTmpAliment);
+            bgGluTmpAliment = bgGluAliment.add(bgGluTmpAliment);
+        }
 
-
-    }
-
-    private boolean isGUIFilled() {
-        return !editNom.getText().toString().isEmpty() &&
-                (checkMatin.isChecked() || checkMidi.isChecked() || checkDiner.isChecked() || checkEncas.isChecked())
-                && !alimentModelSelected.isEmpty();
-    }
-
-    private void openPopRepas(){
-        /*Intent intent = new Intent(this, PopRepasActivity.class);
-        startActivityForResult(intent,1);*/
-        CustomPopup customPopup = new CustomPopup(this);
-        customPopup.build();
+        textViewNeeds.setText("Protéines : "+bgProtAliment.doubleValue()+"/"+bgProt+"g Lipides : "+bgLipTmpAliment.doubleValue()+"/"+bgLip+"g Glucides : "+bgGluTmpAliment.doubleValue()+"/"+bgglu+"g");
     }
 }
