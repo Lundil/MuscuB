@@ -65,8 +65,8 @@ public class AddMealActivity extends Activity {
         checkMidi = findViewById(R.id.checkbox_midi);
         checkDiner = findViewById(R.id.checkbox_diner);
         checkEncas = findViewById(R.id.checkbox_encas);
-        save = findViewById(R.id.save);
-        delete = findViewById(R.id.delete);
+        save = findViewById(R.id.saveMeal);
+        delete = findViewById(R.id.deleteMeal);
 
         setup();
     }
@@ -91,7 +91,7 @@ public class AddMealActivity extends Activity {
         }
         startActivityForResult(intent,1);
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
 
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
@@ -101,6 +101,10 @@ public class AddMealActivity extends Activity {
 
                 if(StringUtils.isNotBlank(quantite)){
                     //Ajoute à la liste des aliments sélectionnés + ajouter à la map des aliments / quantités
+                    if(mapAlimentQuantite.get(alimentSelected) != null){
+                        mapAlimentQuantite.remove(alimentSelected);
+                        alimentModelSelected.remove(alimentSelected);
+                    }
                     mapAlimentQuantite.put(alimentSelected, Double.parseDouble(quantite));
                     alimentModelSelected.add(alimentSelected);
                     alimentModelList.remove(alimentSelected);
@@ -110,14 +114,14 @@ public class AddMealActivity extends Activity {
                     mapAlimentQuantite.remove(alimentSelected);
                     alimentModelList.add(alimentSelected);
                     alimentModelSelected.remove(alimentSelected);
+                }else{
+                    setup();
                 }
             }else  if (resultCode == Activity.RESULT_CANCELED) {
                 //rien
             }
-
-
-            setContentView(R.layout.activity_add_meal);
             //FINDS
+            setContentView(R.layout.activity_add_meal);
             textViewNeeds = findViewById(R.id.textViewNeeds);
             listView = findViewById(R.id.listAliments);
             listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
@@ -127,10 +131,122 @@ public class AddMealActivity extends Activity {
             checkMidi = findViewById(R.id.checkbox_midi);
             checkDiner = findViewById(R.id.checkbox_diner);
             checkEncas = findViewById(R.id.checkbox_encas);
-            save = findViewById(R.id.save);
-            delete = findViewById(R.id.delete);
-            setup();
+            save = findViewById(R.id.saveMeal);
+            delete = findViewById(R.id.deleteMeal);
+
+            save.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    if(!isGUIFilled()){
+                        Toast.makeText(getApplicationContext(), "Renseigner tous les champs", Toast.LENGTH_SHORT).show();
+                    }else {
+                        BigDecimal bgProt = BigDecimal.valueOf(user.getUserDailyNeedsProtein()),bgLip = BigDecimal.valueOf(user.getUserDailyNeedsLipide()),bgglu = BigDecimal.valueOf(user.getUserDailyNeedsGlucide());
+                        BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(user.nbRepas));
+                        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+                        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+                        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+
+                        //Map aliments quantité
+                        BigDecimal bgProtTmpAliment = BigDecimal.ZERO, bgLipTmpAliment = BigDecimal.ZERO, bgGluTmpAliment = BigDecimal.ZERO, bgProtAliment = BigDecimal.ZERO, bgLipAliment = BigDecimal.ZERO, bgGluAliment = BigDecimal.ZERO;
+                        for (Map.Entry<AlimentModel, Double> alimentQuantite : mapAlimentQuantite.entrySet()) {
+                            //Valeur en macro / 1 gramme
+                            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+                            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+                            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+                            //Valeur multipliée par la quantité
+                            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+                            bgLipAliment = bgLipTmpAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+                            bgGluAliment = bgGluTmpAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+                        }
+                        if(bgProtAliment.doubleValue() < bgProt.doubleValue() || bgLipAliment.doubleValue() < bgLip.doubleValue() || bgGluAliment.doubleValue() < bgglu.doubleValue()){
+                            Toast.makeText(getApplicationContext(), "Besoins quotidiens non remplis", Toast.LENGTH_SHORT).show();
+                        }else{
+                            //Calcul
+                            Double totalProteine = 0.0,totalLipide = 0.0,totalGlucide = 0.0;
+                            for (AlimentModel alim: alimentModelSelected) {
+                                totalProteine+=alim.getProteine();
+                                totalLipide+=alim.getProteine();
+                                totalGlucide+=alim.getProteine();
+                            }
+                            RepasModel repasModel = null;
+                            if(repasSelected != null){
+                                repasModel=repasSelected;
+                                repasModel.nom=editNom.getText().toString();
+                                repasModel.description=description.getText().toString();
+                                repasModel.isMatin=checkMatin.isChecked();
+                                repasModel.isMidi=checkMidi.isChecked();
+                                repasModel.isDiner=checkDiner.isChecked();
+                                repasModel.isEncas=checkEncas.isChecked();
+                                repasModel.proteineTotal=totalProteine;
+                                repasModel.lipideTotal=totalLipide;
+                                repasModel.glucideTotal=totalGlucide;
+                            }else{
+                                repasModel = new RepasModel(
+                                        editNom.getText().toString(),
+                                        description.getText().toString(),
+                                        totalProteine,
+                                        totalGlucide,
+                                        totalLipide,
+                                        checkMatin.isChecked(),
+                                        checkMidi.isChecked(),
+                                        checkDiner.isChecked(),
+                                        checkEncas.isChecked());
+                            }
+                            repasModel.save();
+                            //TODO
+                            if(repasSelected != null){
+                                AlimentRepasModel.deleteAlimentFromAlimentRepasModelByIdRepas(repasSelected.getId());
+                            }
+                            for (AlimentModel selected: alimentModelSelected) {
+                                AlimentRepasModel alimentRepasModel = new AlimentRepasModel();
+                                alimentRepasModel.alimentModel=selected.getId();
+                                alimentRepasModel.repasModel=repasModel.getId();
+                                alimentRepasModel.quantite=mapAlimentQuantite.get(selected);
+                                alimentRepasModel.save();
+                            }
+                            finish();
+                        }
+
+                    }
+
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    AlimentRepasModel.deleteAlimentFromAlimentRepasModelByIdRepas(repasSelected.getId());
+                    RepasModel repasModel = repasSelected;
+                    repasModel.delete();
+                    finish();
+                }
+            });
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+                    view.setSelected(true);
+                    alimentSelected = alimentListAdapter.getItem(position);
+                    setContentView(R.layout.activity_add_meal_darker);
+                    listView = findViewById(R.id.listAliments);
+                    listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
+                    listView.setVisibility(View.GONE);
+                    listAlimentsSelected.setVisibility(View.GONE);
+                    openPopRepas(false);
+                }
+            });
+            listAlimentsSelected.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,long arg3) {
+                    view.setSelected(true);
+                    alimentSelected = alimentSelectedListAdapter.getItem(position);
+                    setContentView(R.layout.activity_add_meal_darker);
+                    listView = findViewById(R.id.listAliments);
+                    listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
+                    listView.setVisibility(View.GONE);
+                    listAlimentsSelected.setVisibility(View.GONE);
+                    openPopRepas(true);
+                }
+            });
             refreshLists();
+            updateBesoins();
         }
     }
 
@@ -249,8 +365,7 @@ public class AddMealActivity extends Activity {
             finish();*/
 
             refreshLists();
-
-            delete.setVisibility(View.VISIBLE);
+            delete.setVisibility(View.GONE);
         }else{
             delete.setVisibility(View.GONE);
         }
@@ -264,6 +379,10 @@ public class AddMealActivity extends Activity {
             }
         });
 
+        updateBesoins();
+    }
+
+    private void updateBesoins(){
         //NEEDS
         BigDecimal bgProt = BigDecimal.valueOf(user.getUserDailyNeedsProtein()),bgLip = BigDecimal.valueOf(user.getUserDailyNeedsLipide()),bgglu = BigDecimal.valueOf(user.getUserDailyNeedsGlucide());
         BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(user.nbRepas));
@@ -272,17 +391,16 @@ public class AddMealActivity extends Activity {
         bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
 
         //Map aliments quantité
-        BigDecimal bgProtTmpAliment = BigDecimal.ONE, bgLipTmpAliment = BigDecimal.ONE, bgGluTmpAliment = BigDecimal.ONE, bgProtAliment = BigDecimal.ONE, bgLipAliment = BigDecimal.ONE, bgGluAliment = BigDecimal.ONE;
+        BigDecimal bgProtTmpAliment = BigDecimal.ZERO, bgLipTmpAliment = BigDecimal.ZERO, bgGluTmpAliment = BigDecimal.ZERO, bgProtAliment = BigDecimal.ZERO, bgLipAliment = BigDecimal.ZERO, bgGluAliment = BigDecimal.ZERO;
         for (Map.Entry<AlimentModel, Double> alimentQuantite : mapAlimentQuantite.entrySet()) {
-            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine());
-            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide());
-            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide());
-            bgProtAliment = bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
-            bgLipTmpAliment = bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
-            bgGluTmpAliment = bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2);
-            bgProtAliment = bgProtAliment.add(bgProtTmpAliment);
-            bgLipTmpAliment = bgLipAliment.add(bgLipTmpAliment);
-            bgGluTmpAliment = bgGluAliment.add(bgGluTmpAliment);
+            //Valeur en macro / 1 gramme
+            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+            //Valeur multipliée par la quantité
+            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+            bgLipTmpAliment = bgLipTmpAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+            bgGluTmpAliment = bgGluTmpAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
         }
 
         textViewNeeds.setText("Protéines : "+bgProtAliment.doubleValue()+"/"+bgProt+"g Lipides : "+bgLipTmpAliment.doubleValue()+"/"+bgLip+"g Glucides : "+bgGluTmpAliment.doubleValue()+"/"+bgglu+"g");

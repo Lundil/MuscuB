@@ -73,8 +73,8 @@ public class AddFoodActivity extends Activity {
         // Apply the adapter to the spinner
         spinnerTypeAliment.setAdapter(adapter);
 
-        save = findViewById(R.id.save);
-        delete = findViewById(R.id.delete);
+        save = findViewById(R.id.saveFood);
+        delete = findViewById(R.id.deleteFood);
 
 
         save.setOnClickListener(new View.OnClickListener() {
