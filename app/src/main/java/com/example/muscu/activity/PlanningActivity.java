@@ -23,6 +23,7 @@ public class PlanningActivity extends Activity {
     private JourListAdapter jourListAdapter;
     private JourModel jourSelected;
     private Button buttonCreateDiete;
+    private Button buttonCourses;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,9 +32,17 @@ public class PlanningActivity extends Activity {
         setContentView(R.layout.activity_planning);
         setTitle("Planning");
         buttonCreateDiete = findViewById(R.id.buttonCreateDiete);
+        buttonCourses = findViewById(R.id.buttonCourses);
+
         buttonCreateDiete.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 openCreateDiete();
+            }
+        });
+
+        buttonCourses.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openCourses();
             }
         });
 
@@ -43,7 +52,9 @@ public class PlanningActivity extends Activity {
         if (jourModelList != null && !jourModelList.isEmpty()) {
             jourListAdapter = new JourListAdapter(this, R.layout.adapter_view_jour_layout, jourModelList);
             listView.setAdapter(jourListAdapter);
+            buttonCourses.setVisibility(View.VISIBLE);
         }else{
+            buttonCourses.setVisibility(View.GONE);
             buttonCreateDiete.setText("Créér votre diète");
         }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,6 +75,11 @@ public class PlanningActivity extends Activity {
 
     public void openCreateDiete() {
         Intent intent = new Intent(this, AddDieteActivity.class);
+        startActivityForResult(intent,1);
+    }
+
+    public void openCourses() {
+        Intent intent = new Intent(this, CoursesActivity.class);
         startActivityForResult(intent,1);
     }
 

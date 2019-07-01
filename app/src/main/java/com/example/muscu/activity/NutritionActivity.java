@@ -64,6 +64,7 @@ public class NutritionActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String erreur = isConfitionPlanningOK();
+                button = findViewById(R.id.buttonPlanning);
                 if(erreur.isEmpty()){
                     openPlanning();
                     button.setBackgroundColor(Color.parseColor("#77d11d"));

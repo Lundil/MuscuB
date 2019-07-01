@@ -13,8 +13,6 @@ import android.widget.Toast;
 
 import com.example.muscu.R;
 import com.example.muscu.adapter.RepasListAdapter;
-import com.example.muscu.model.AlimentModel;
-import com.example.muscu.model.AlimentRepasModel;
 import com.example.muscu.model.JourModel;
 import com.example.muscu.model.RepasModel;
 import com.example.muscu.model.UtilisateurModel;
@@ -239,12 +237,33 @@ public class AddDieteActivity extends Activity {
             jour.repasMatin=pDJs.get(rand.nextInt(pDJs.size()));
             jour.repasMidi=dejeuners.get(rand.nextInt(dejeuners.size()));
             jour.repasDiner=diners.get(rand.nextInt(diners.size()));
-            jour.repasEncas1=encas.get(rand.nextInt(encas.size()));
-            encas.remove(jour.repasEncas1);
-            jour.repasEncas2=encas.get(rand.nextInt(encas.size()));
-            encas.remove(jour.repasEncas2);
-            jour.repasEncas3=encas.get(rand.nextInt(encas.size()));
-            encas.remove(jour.repasEncas3);
+            if(Integer.valueOf(user.getNbRepas())>3){
+                jour.repasEncas1=encas.get(rand.nextInt(encas.size()));
+                encas.remove(jour.repasEncas1);
+                if(encas.isEmpty()){
+                    for (RepasModel clone : listEncasSelected) {
+                        encas.add(clone);
+                    }
+                }
+            }
+            if(Integer.valueOf(user.getNbRepas())>4){
+                jour.repasEncas2=encas.get(rand.nextInt(encas.size()));
+                encas.remove(jour.repasEncas2);
+                if(encas.isEmpty()){
+                    for (RepasModel clone : listEncasSelected) {
+                        encas.add(clone);
+                    }
+                }
+            }
+            if(Integer.valueOf(user.getNbRepas())>5){
+                jour.repasEncas3=encas.get(rand.nextInt(encas.size()));
+                encas.remove(jour.repasEncas3);
+                if(encas.isEmpty()){
+                    for (RepasModel clone : listEncasSelected) {
+                        encas.add(clone);
+                    }
+                }
+            }
             jour.save();
             //Variété des repas
             pDJs.remove(jour.repasMatin);

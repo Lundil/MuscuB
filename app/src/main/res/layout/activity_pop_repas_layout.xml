@@ -12,7 +12,7 @@
         android:gravity="left|center"
         android:layout_marginLeft="20sp"
         android:fontFamily="@font/comfortaa"
-        android:text="Quantité (gr/cl): " />
+        android:text="Quantité (gr/ml): " />
 
     <EditText
         android:id="@+id/editText"

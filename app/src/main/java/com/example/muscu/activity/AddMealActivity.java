@@ -2,7 +2,6 @@ package com.example.muscu.activity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -25,6 +24,7 @@ import com.example.muscu.model.UtilisateurModel;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +46,6 @@ public class AddMealActivity extends Activity {
     private RepasModel repasSelected;
     private List<AlimentModel> alimentModelList, alimentModelSelected = new ArrayList<>();
     private AlimentListAdapter alimentListAdapter,alimentSelectedListAdapter;
-    private Double repasProt = 0.0,repasLip = 0.0,repasGlu = 0.0;
     private HashMap<AlimentModel, Double> mapAlimentQuantite = new HashMap<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +68,7 @@ public class AddMealActivity extends Activity {
         delete = findViewById(R.id.deleteMeal);
 
         setup();
+        updateBesoins();
     }
 
     private void refreshLists(){
@@ -85,6 +85,15 @@ public class AddMealActivity extends Activity {
     }
 
     private void openPopRepas(boolean exist){
+        if(repasSelected == null){
+            repasSelected = new RepasModel();
+        }
+        repasSelected.nom=editNom.getText().toString();
+        repasSelected.description=description.getText().toString();
+        repasSelected.isMatin=checkMatin.isChecked();
+        repasSelected.isMidi=checkMidi.isChecked();
+        repasSelected.isDiner=checkDiner.isChecked();
+        repasSelected.isEncas=checkEncas.isChecked();
         Intent intent = new Intent(this, PopRepasActivity.class);
         if(exist){
             intent.putExtra("quantiteExistante",mapAlimentQuantite.get(alimentSelected));
@@ -96,7 +105,7 @@ public class AddMealActivity extends Activity {
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
                 //set quantite
-                String quantite=data.getStringExtra("quantite");
+                 String quantite=data.getStringExtra("quantite");
                 boolean isDelete=(boolean)data.getBooleanExtra("isDelete", false);
 
                 if(StringUtils.isNotBlank(quantite)){
@@ -121,7 +130,7 @@ public class AddMealActivity extends Activity {
                 //rien
             }
             //FINDS
-            setContentView(R.layout.activity_add_meal);
+             setContentView(R.layout.activity_add_meal);
             textViewNeeds = findViewById(R.id.textViewNeeds);
             listView = findViewById(R.id.listAliments);
             listAlimentsSelected = findViewById(R.id.listAlimentsSelected);
@@ -141,32 +150,25 @@ public class AddMealActivity extends Activity {
                     }else {
                         BigDecimal bgProt = BigDecimal.valueOf(user.getUserDailyNeedsProtein()),bgLip = BigDecimal.valueOf(user.getUserDailyNeedsLipide()),bgglu = BigDecimal.valueOf(user.getUserDailyNeedsGlucide());
                         BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(user.nbRepas));
-                        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
-                        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
-                        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+                        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN);
+                        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN);
+                        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN);
 
                         //Map aliments quantité
                         BigDecimal bgProtTmpAliment = BigDecimal.ZERO, bgLipTmpAliment = BigDecimal.ZERO, bgGluTmpAliment = BigDecimal.ZERO, bgProtAliment = BigDecimal.ZERO, bgLipAliment = BigDecimal.ZERO, bgGluAliment = BigDecimal.ZERO;
                         for (Map.Entry<AlimentModel, Double> alimentQuantite : mapAlimentQuantite.entrySet()) {
                             //Valeur en macro / 1 gramme
-                            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0)).setScale(2);
-                            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
-                            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+                            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0));
+                            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0));
+                            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0));
                             //Valeur multipliée par la quantité
-                            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
-                            bgLipAliment = bgLipTmpAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
-                            bgGluAliment = bgGluTmpAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+                            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())));
+                            bgLipAliment = bgLipAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())));
+                            bgGluAliment = bgGluAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())));
                         }
-                        if(bgProtAliment.doubleValue() < bgProt.doubleValue() || bgLipAliment.doubleValue() < bgLip.doubleValue() || bgGluAliment.doubleValue() < bgglu.doubleValue()){
+                        if(bgProtAliment.compareTo(bgProt) == -1 || bgLipAliment.compareTo(bgLip) == -1 || bgGluAliment.compareTo(bgglu) == -1){
                             Toast.makeText(getApplicationContext(), "Besoins quotidiens non remplis", Toast.LENGTH_SHORT).show();
                         }else{
-                            //Calcul
-                            Double totalProteine = 0.0,totalLipide = 0.0,totalGlucide = 0.0;
-                            for (AlimentModel alim: alimentModelSelected) {
-                                totalProteine+=alim.getProteine();
-                                totalLipide+=alim.getProteine();
-                                totalGlucide+=alim.getProteine();
-                            }
                             RepasModel repasModel = null;
                             if(repasSelected != null){
                                 repasModel=repasSelected;
@@ -176,16 +178,16 @@ public class AddMealActivity extends Activity {
                                 repasModel.isMidi=checkMidi.isChecked();
                                 repasModel.isDiner=checkDiner.isChecked();
                                 repasModel.isEncas=checkEncas.isChecked();
-                                repasModel.proteineTotal=totalProteine;
-                                repasModel.lipideTotal=totalLipide;
-                                repasModel.glucideTotal=totalGlucide;
+                                repasModel.proteineTotal=bgProtTmpAliment.doubleValue();
+                                repasModel.lipideTotal=bgLipTmpAliment.doubleValue();
+                                repasModel.glucideTotal=bgGluTmpAliment.doubleValue();
                             }else{
                                 repasModel = new RepasModel(
                                         editNom.getText().toString(),
                                         description.getText().toString(),
-                                        totalProteine,
-                                        totalGlucide,
-                                        totalLipide,
+                                        bgProtTmpAliment.doubleValue(),
+                                        bgGluTmpAliment.doubleValue(),
+                                        bgLipTmpAliment.doubleValue(),
                                         checkMatin.isChecked(),
                                         checkMidi.isChecked(),
                                         checkDiner.isChecked(),
@@ -245,6 +247,16 @@ public class AddMealActivity extends Activity {
                     openPopRepas(true);
                 }
             });
+            editNom.setText(repasSelected.nom);
+            description.setText(repasSelected.description);
+            checkMatin.setChecked(repasSelected.isMatin);
+            checkMidi.setChecked(repasSelected.isMidi);
+            checkDiner.setChecked(repasSelected.isDiner);
+            checkEncas.setChecked(repasSelected.isEncas);
+            if(repasSelected.getId()==null){
+                //TODO
+                delete.setVisibility(View.GONE);
+            }
             refreshLists();
             updateBesoins();
         }
@@ -295,7 +307,7 @@ public class AddMealActivity extends Activity {
                                 checkEncas.isChecked());
                     }
                     repasModel.save();
-                    //TODO
+
                     if(repasSelected != null){
                         AlimentRepasModel.deleteAlimentFromAlimentRepasModelByIdRepas(repasSelected.getId());
                     }
@@ -353,16 +365,13 @@ public class AddMealActivity extends Activity {
                 AlimentModel alimRecup = null;
                 for (AlimentRepasModel alimRepas: alimentsRepasModel) {
                     alimRecup = AlimentModel.getAlimentById(alimRepas.alimentModel);
+                    mapAlimentQuantite.put(alimRecup, alimRepas.quantite);
                     if(alimRecup!=null){
                         alimentModelSelected.add(alimRecup);
                         alimentModelList.remove(alimRecup);
                     }
                 }
             }
-            /*alimentRepasModel.alimentModel=alimentSelected;
-            alimentRepasModel.repasModel=repasModel;
-            alimentRepasModel.save();
-            finish();*/
 
             refreshLists();
             delete.setVisibility(View.GONE);
@@ -386,23 +395,23 @@ public class AddMealActivity extends Activity {
         //NEEDS
         BigDecimal bgProt = BigDecimal.valueOf(user.getUserDailyNeedsProtein()),bgLip = BigDecimal.valueOf(user.getUserDailyNeedsLipide()),bgglu = BigDecimal.valueOf(user.getUserDailyNeedsGlucide());
         BigDecimal nbRepasBG = BigDecimal.valueOf(Double.parseDouble(user.nbRepas));
-        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
-        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
-        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2);
+        bgProt = bgProt.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.HALF_DOWN);
+        bgLip = bgLip.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.HALF_DOWN);
+        bgglu = bgglu.divide(nbRepasBG, BigDecimal.ROUND_HALF_DOWN).setScale(2, RoundingMode.HALF_DOWN);
 
         //Map aliments quantité
         BigDecimal bgProtTmpAliment = BigDecimal.ZERO, bgLipTmpAliment = BigDecimal.ZERO, bgGluTmpAliment = BigDecimal.ZERO, bgProtAliment = BigDecimal.ZERO, bgLipAliment = BigDecimal.ZERO, bgGluAliment = BigDecimal.ZERO;
         for (Map.Entry<AlimentModel, Double> alimentQuantite : mapAlimentQuantite.entrySet()) {
             //Valeur en macro / 1 gramme
-            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0)).setScale(2);
-            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
-            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0)).setScale(2);
+            bgProtTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getProteine()).divide(BigDecimal.valueOf(100.0));
+            bgLipTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getLipide()).divide(BigDecimal.valueOf(100.0));
+            bgGluTmpAliment = BigDecimal.valueOf(alimentQuantite.getKey().getGlucide()).divide(BigDecimal.valueOf(100.0));
             //Valeur multipliée par la quantité
-            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
-            bgLipTmpAliment = bgLipTmpAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
-            bgGluTmpAliment = bgGluTmpAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue())).setScale(2));
+            bgProtAliment = bgProtAliment.add(bgProtTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue()))).setScale(2, RoundingMode.HALF_DOWN);
+            bgLipAliment = bgLipAliment.add(bgLipTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue()))).setScale(2, RoundingMode.HALF_DOWN);
+            bgGluAliment = bgGluAliment.add(bgGluTmpAliment.multiply(BigDecimal.valueOf(alimentQuantite.getValue()))).setScale(2, RoundingMode.HALF_DOWN);
         }
 
-        textViewNeeds.setText("Protéines : "+bgProtAliment.doubleValue()+"/"+bgProt+"g Lipides : "+bgLipTmpAliment.doubleValue()+"/"+bgLip+"g Glucides : "+bgGluTmpAliment.doubleValue()+"/"+bgglu+"g");
+        textViewNeeds.setText("Protéines : "+bgProtAliment.doubleValue()+"/"+bgProt+"g Lipides : "+bgLipAliment.doubleValue()+"/"+bgLip+"g Glucides : "+bgGluAliment.doubleValue()+"/"+bgglu+"g");
     }
 }

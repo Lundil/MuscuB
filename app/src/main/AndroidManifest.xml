@@ -27,6 +27,7 @@
         <activity android:name=".activity.MainActivity"></activity>
         <activity android:name=".activity.PlanningActivity"></activity>
         <activity android:name=".activity.AddDieteActivity"></activity>
+        <activity android:name=".activity.CoursesActivity"></activity>
         <activity android:name=".activity.AddFoodActivity"></activity>
         <activity android:name=".activity.JourActivity"></activity>
         <activity android:name=".activity.PopRepasActivity" android:theme="@style/AppTheme.PopTheme">
